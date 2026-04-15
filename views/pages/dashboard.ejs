@@ -1,0 +1,410 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<%
+  const calPct   = Math.min(Math.round((todayCalories / calorieGoal) * 100), 120);
+  const protPct  = Math.min(Math.round((todayProtein  / proteinGoal) * 100), 120);
+  const budgPct  = weekBudget > 0 ? Math.min(Math.round((weekSpend / weekBudget) * 100), 120) : 0;
+  const maxCal   = Math.max(...weeklyData.map(d => d.calories), 1);
+  const DAYS_MINI = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+  const SLOTS_MINI = ["breakfast","lunch","dinner"];
+  const DAY_SHORT = { monday:"Mon",tuesday:"Tue",wednesday:"Wed",thursday:"Thu",friday:"Fri",saturday:"Sat",sunday:"Sun" };
+  const today = new Date();
+  const todayDayName = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"][today.getDay()];
+%>
+
+<!-- Header -->
+<section class="section-card dash-header">
+  <div class="dash-welcome">
+    <div class="dash-avatar"><%= (dashboardUser.profile?.firstName || dashboardUser.username).charAt(0).toUpperCase() %></div>
+    <div>
+      <p class="eyebrow">Dashboard</p>
+      <h1>Welcome back, <%= dashboardUser.profile?.firstName || dashboardUser.username %></h1>
+      <p class="text-muted"><%= dashboardUser.email %></p>
+    </div>
+  </div>
+  <div class="button-row">
+    <a href="/planner" class="button button-ghost button-small">View Planner</a>
+    <a href="/profile" class="button button-small">Edit Profile</a>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="dash-stats">
+  <article class="stat-card">
+    <span class="stat-icon">♡</span>
+    <div><strong><%= dashboardUser.favoritesMeals.length %></strong><small>Favourites</small></div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg></span>
+    <div><strong><%= dashboardUser.mealHistory.length %></strong><small>Meals Tracked</small></div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+    <div><strong><%= streak %></strong><small>Day Streak</small></div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10"/><path d="M1 6h22v4H1z"/><path d="M10 12h4"/></svg></span>
+    <div><strong><%= orders.length %></strong><small>Orders</small></div>
+  </article>
+</div>
+
+<!-- Row 1: Nutrition today + Weekly chart -->
+<div class="grid-two">
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Today's intake</p><h2>Nutrition Tracker</h2></div>
+      <a href="/meals" class="text-link">Log meal</a>
+    </div>
+    <div class="nutrition-tracker">
+      <div class="nt-row">
+        <div class="nt-label">
+          <span>Calories</span>
+          <span><%= todayCalories %> / <%= calorieGoal %> kcal</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill <%= calPct > 100 ? 'over' : '' %>" style="width:<%= calPct %>%"></div>
+        </div>
+      </div>
+      <div class="nt-row">
+        <div class="nt-label">
+          <span>Protein</span>
+          <span><%= todayProtein %>g / <%= proteinGoal %>g</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill <%= protPct > 100 ? 'over' : '' %>" style="width:<%= protPct %>%"></div>
+        </div>
+      </div>
+      <% if (weekBudget > 0) { %>
+      <div class="nt-row">
+        <div class="nt-label">
+          <span>Weekly spend</span>
+          <span><%= formatCurrency(weekSpend) %> / <%= formatCurrency(weekBudget) %></span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill <%= budgPct > 100 ? 'over' : '' %>" style="width:<%= budgPct %>%"></div>
+        </div>
+      </div>
+      <% } %>
+      <% if (!dashboardUser.profile?.dailyCalorieGoal) { %>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:4px">Set a calorie goal in your <a href="/profile" style="color:var(--brand);font-weight:700">profile</a> to personalise targets.</p>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Last 7 days</p><h2>Calorie History</h2></div>
+    </div>
+    <div class="weekly-chart">
+      <% weeklyData.forEach((d, i) => {
+        const pct = maxCal > 0 ? Math.round((d.calories / maxCal) * 90) : 4;
+        const isToday = (i === 6);
+      %>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar <%= isToday ? 'today' : '' %>" style="height:<%= Math.max(pct, 4) %>px">
+          <span class="chart-tooltip"><%= d.calories %> kcal</span>
+        </div>
+        <span class="chart-label"><%= d.label %></span>
+      </div>
+      <% }) %>
+    </div>
+  </section>
+
+</div>
+
+<!-- Row 2: Today's suggestion + Health tip + Streak -->
+<div class="grid-two">
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Based on your profile</p><h2>What to Eat Today</h2></div>
+      <% if (suggestBreakfast || suggestLunch || suggestDinner) { %>
+      <form method="POST" action="/cart/add" id="suggestAllForm" style="display:none">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="redirectTo" value="/cart?message=Meals+added+to+cart&type=success">
+      </form>
+      <% } %>
+    </div>
+    <% if (!suggestBreakfast && !suggestLunch && !suggestDinner) { %>
+      <div class="empty-state" style="padding:20px 0">
+        <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <p>Update your health profile to get daily suggestions.</p>
+        <a href="/profile" class="button button-ghost button-small">Set profile</a>
+      </div>
+    <% } else { %>
+    <div class="today-suggestions">
+      <% [
+        {label:'Breakfast', meal: suggestBreakfast},
+        {label:'Lunch',     meal: suggestLunch},
+        {label:'Dinner',    meal: suggestDinner}
+      ].forEach(({label, meal}) => {
+        if (!meal) return;
+        const vis = getMealVisual(meal);
+      %>
+        <div class="suggest-slot">
+          <span class="suggest-slot-label"><%= label %></span>
+          <div class="suggest-img" style="<%= vis.backgroundStyle %>">
+            <img src="<%= vis.imageUrl %>" alt="<%= meal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="suggest-info">
+            <strong><a href="/meals/<%= meal._id %>"><%= meal.meal_name %></a></strong>
+            <span><%= meal.calories||0 %> kcal &middot; <%= formatCurrency(meal.price) %></span>
+          </div>
+          <form method="POST" action="/cart/add" class="inline-form">
+            <input type="hidden" name="mealId" value="<%= meal._id %>">
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="redirectTo" value="/dashboard?message=Added+to+cart&type=success">
+            <button type="submit" class="button button-small">+ Cart</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+
+    <!-- Health Tip -->
+    <section class="section-card" style="flex:1">
+      <p class="eyebrow">Daily tip</p>
+      <h3 style="margin:4px 0 12px">Health Insight</h3>
+      <div class="tip-card">
+        <span class="tip-condition"><%= dashboardUser.profile?.primaryCondition || 'General' %> tip</span>
+        <p><%= todayTip %></p>
+      </div>
+    </section>
+
+    <!-- Streak -->
+    <section class="section-card" style="flex:0">
+      <p class="eyebrow">Consistency</p>
+      <h3 style="margin:4px 0 10px">Tracking Streak</h3>
+      <div class="streak-display">
+        <span class="streak-number"><%= streak %></span>
+        <span class="streak-label">day<%= streak !== 1 ? 's' : '' %> in a row</span>
+        <% if (streak === 0) { %>
+          <p style="font-size:0.8rem;color:var(--muted);margin-top:8px">Track a meal today to start your streak!</p>
+        <% } else if (streak >= 7) { %>
+          <p style="font-size:0.8rem;color:var(--brand);font-weight:700;margin-top:8px">Amazing week! Keep it up.</p>
+        <% } %>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+<!-- Prescription compliance widget (only if user has a prescription) -->
+<% if (complianceReport) { %>
+<section class="section-card dash-compliance">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Medical diet</p>
+      <h2>Prescription Compliance</h2>
+    </div>
+    <a href="/prescription" class="text-link">View full report &rarr;</a>
+  </div>
+  <%
+    const compPct = complianceReport.trackedDays > 0
+      ? Math.round((complianceReport.compliantDays / complianceReport.trackedDays) * 100)
+      : 0;
+    const compLabel = complianceReport.trackedDays === 0 ? 'Start tracking'
+      : compPct === 100 ? 'Excellent'
+      : compPct >= 70  ? 'Good'
+      : 'Needs improvement';
+  %>
+  <div class="compliance-row">
+    <div class="compliance-score-big">
+      <span class="compliance-num"><%= complianceReport.compliantDays %></span>
+      <span class="compliance-denom">/ 7</span>
+      <span class="compliance-unit">days followed</span>
+    </div>
+    <div class="compliance-mid">
+      <strong><%= compLabel %></strong>
+      <p class="text-muted" style="font-size:0.82rem;margin-top:4px">
+        You logged meals on <%= complianceReport.trackedDays %> of 7 days — compliant on <%= complianceReport.compliantDays %>.
+      </p>
+      <div class="rx-compliance-bar-wrap" style="margin-top:10px">
+        <div class="rx-compliance-bar" style="width:<%= compPct %>%"></div>
+      </div>
+    </div>
+    <div class="compliance-days-mini">
+      <% complianceReport.days.forEach(day => {
+        const d = new Date(day.date);
+        const isToday = d.toDateString() === new Date().toDateString();
+      %>
+        <div class="compliance-day-dot <%= !day.tracked ? 'dot-none' : day.compliant ? 'dot-ok' : 'dot-fail' %>" title="<%= d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) %>: <%= !day.tracked ? 'No meals logged' : day.compliant ? 'Compliant' : 'Conflict detected' %>">
+          <span><%= ['S','M','T','W','T','F','S'][d.getDay()] %></span>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- Row 3: Mini planner + Recommendations -->
+<div class="grid-two">
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">This week</p><h2>Meal Plan</h2></div>
+      <a href="/planner" class="text-link">Edit plan &rarr;</a>
+    </div>
+    <% if (!miniPlan) { %>
+      <div class="empty-state" style="padding:16px 0">
+        <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <p>No plan yet. Build your weekly meal plan.</p>
+        <a href="/planner" class="button button-ghost button-small">Open planner</a>
+      </div>
+    <% } else { %>
+    <div class="mini-plan-grid">
+      <!-- Header row -->
+      <div class="mini-plan-cell mini-plan-label"></div>
+      <% DAYS_MINI.forEach(d => { %>
+        <div class="mini-plan-cell mini-plan-header <%= d === todayDayName ? 'today-col' : '' %>">
+          <%= DAY_SHORT[d] %>
+        </div>
+      <% }) %>
+      <!-- Slot rows -->
+      <% SLOTS_MINI.forEach(slot => { %>
+        <div class="mini-plan-cell mini-plan-label"><%= slot.slice(0,1).toUpperCase() + slot.slice(1,3) %></div>
+        <% DAYS_MINI.forEach(d => { %>
+          <div class="mini-plan-cell <%= d === todayDayName ? 'today-col' : '' %>">
+            <% const slotItems = miniPlan.days[d]?.[slot] || []; const m = slotItems[0]?.meal; %>
+            <% if (m) { %>
+              <a href="/meals/<%= m._id %>" class="mini-plan-meal" title="<%= m.meal_name %>"><%= m.meal_name.slice(0,10) %><%= m.meal_name.length>10?'…':'' %></a>
+            <% } else { %>
+              <span class="mini-plan-empty">·</span>
+            <% } %>
+          </div>
+        <% }) %>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Personalised picks</p><h2>Recommended for You</h2></div>
+      <a href="/meals" class="text-link">Browse all</a>
+    </div>
+    <% if (!recommendations.length) { %>
+      <div class="empty-state" style="padding:16px 0">
+        <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <p>Set your health profile to get personalised picks.</p>
+        <a href="/profile" class="button button-ghost button-small">Update Profile</a>
+      </div>
+    <% } else { %>
+    <div class="stack-list">
+      <% recommendations.slice(0,4).forEach(meal => { %>
+        <% const mealVisual = getMealVisual(meal); %>
+        <div class="stack-item">
+          <a href="/meals/<%= meal._id %>" class="stack-visual">
+            <div class="stack-emoji" style="<%= mealVisual.backgroundStyle %>">
+              <img src="<%= mealVisual.imageUrl %>" alt="<%= meal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          </a>
+          <div class="stack-body">
+            <div class="card-meta">
+              <strong><a href="/meals/<%= meal._id %>"><%= meal.meal_name %></a></strong>
+              <span class="price-tag"><%= formatCurrency(meal.price) %></span>
+            </div>
+            <% if (meal.recommendationReason) { %><p class="rec-reason"><%= meal.recommendationReason %></p><% } %>
+            <form method="POST" action="/cart/add" class="inline-form">
+              <input type="hidden" name="mealId" value="<%= meal._id %>">
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="redirectTo" value="/dashboard?message=Added+to+cart&type=success">
+              <button type="submit" class="button button-small">Add to cart</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+</div>
+
+<!-- Row 4: Favourites + Recent Orders -->
+<div class="grid-two">
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Saved meals</p><h2>Favourites</h2></div>
+      <a href="/meals" class="text-link">Browse meals</a>
+    </div>
+    <% if (!dashboardUser.favoritesMeals.length) { %>
+      <div class="empty-state" style="padding:16px 0">
+        <div class="empty-icon">♡</div>
+        <p>No favourites yet. Hit ♡ Save on any meal.</p>
+        <a href="/meals" class="button button-ghost button-small">Browse meals</a>
+      </div>
+    <% } else { %>
+    <div class="stack-list">
+      <% dashboardUser.favoritesMeals.slice(0,4).forEach(meal => { %>
+        <% const mealVisual = getMealVisual(meal); %>
+        <div class="stack-item">
+          <a href="/meals/<%= meal._id %>" class="stack-visual">
+            <div class="stack-emoji" style="<%= mealVisual.backgroundStyle %>">
+              <img src="<%= mealVisual.imageUrl %>" alt="<%= meal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          </a>
+          <div class="stack-body">
+            <div class="card-meta">
+              <strong><a href="/meals/<%= meal._id %>"><%= meal.meal_name %></a></strong>
+              <span class="price-tag"><%= formatCurrency(meal.price) %></span>
+            </div>
+            <div class="button-row">
+              <form method="POST" action="/cart/add" class="inline-form">
+                <input type="hidden" name="mealId" value="<%= meal._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="redirectTo" value="/dashboard?message=Added+to+cart&type=success">
+                <button type="submit" class="button button-small">Add to cart</button>
+              </form>
+              <form method="POST" action="/meals/<%= meal._id %>/unfavorite" class="inline-form">
+                <input type="hidden" name="redirectTo" value="/dashboard?message=Removed+from+favourites&type=success">
+                <button type="submit" class="btn-remove">Remove</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <div><p class="eyebrow">Order history</p><h2>Recent Orders</h2></div>
+      <% if (orders.length) { %><a href="/cart" class="text-link">View cart</a><% } %>
+    </div>
+    <% if (!orders.length) { %>
+      <div class="empty-state" style="padding:16px 0">
+        <div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M21 10V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10"/><path d="M1 6h22v4H1z"/><path d="M10 12h4"/></svg></div>
+        <p>No orders yet.</p>
+        <a href="/meals" class="button button-ghost button-small">Start browsing</a>
+      </div>
+    <% } else { %>
+    <div class="stack-list">
+      <% orders.slice(0,5).forEach(order => { %>
+        <div class="stack-item stack-item-row">
+          <div class="order-meta">
+            <strong>#<%= order._id.toString().slice(-6).toUpperCase() %></strong>
+            <p><%= formatDate(order.createdAt) %> &middot; <%= order.items.length %> item<%= order.items.length!==1?'s':'' %></p>
+          </div>
+          <div class="order-right">
+            <span class="status-badge status-<%= order.status %>"><%= order.status %></span>
+            <strong><%= formatCurrency(order.totalPrice) %></strong>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>

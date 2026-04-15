@@ -1,0 +1,655 @@
+meal_name,disease_type,sugar_level,salt_level,temperature,expiry_days,calories,protein,description
+Grilled Chicken Breast,Heart Disease,Low,Low,Warm,3,165,31,Lean protein rich meal perfect for heart health
+Steamed Broccoli,Diabetes,Low,Low,Warm,2,55,3.7,Nutrient dense with minimal carbs
+Baked Salmon,Heart Disease,Low,Low,Warm,2,206,22,Omega-3 rich fish for cardiovascular health
+Brown Rice,Diabetes,Medium,Low,Warm,7,215,5,Complex carbs with good fiber
+Sweet Potato,Diabetes,Medium,Low,Warm,5,103,2,Vitamin A rich healthy carbs
+Spinach Salad,None,Low,Low,Cold,2,23,2.9,Fresh leafy greens with nutrients
+Egg White Omelet,Heart Disease,Low,Low,Warm,1,17,3.6,Protein rich low cholesterol meal
+Oatmeal,Diabetes,Low,Low,Warm,7,150,5,Soluble fiber helps regulate blood sugar
+Greek Yogurt,None,Low,Low,Cold,14,100,10,Protein and probiotics for gut health
+Almonds Mix,Hypertension,Low,Low,Cold,30,579,21,Heart healthy nuts with good fats
+Grilled Vegetables,None,Low,Low,Warm,2,65,3,Variety of nutritious vegetables
+Turkey Breast,Heart Disease,Low,Low,Warm,3,135,29,Lean poultry low in fat
+Lentil Soup,Diabetes,Low,Low,Warm,4,230,18,Plant based protein with fiber
+Tomato Juice,Hypertension,Low,Low,Cold,5,18,0.9,Potassium rich low sodium option
+Whole Wheat Bread,Diabetes,Low,Low,Warm,4,270,11,Fiber rich complex carbohydrates
+Zucchini Noodles,Diabetes,Low,Low,Warm,2,21,1.5,Low carb pasta alternative
+Baked White Fish,Heart Disease,Low,Low,Warm,2,100,20,Lean protein source
+Chickpea Salad,Diabetes,Low,Low,Cold,3,269,15,Protein and fiber combination
+Carrot Sticks,None,Low,Low,Cold,7,41,0.9,Vitamin A and low calorie snack
+Cucumber Slices,None,Low,Low,Cold,3,16,0.7,Hydrating low calorie vegetable
+Steamed Beans,Diabetes,Low,Low,Warm,3,127,9,Legumes with good nutrients
+Herb Tea,None,Low,Low,Hot,30,2,0,Calorie free herbal beverage
+Tuna in Water,Heart Disease,Low,Low,Cold,2,132,29,Lean protein fish source
+Brussels Sprouts,None,Low,Low,Warm,3,36,2.8,Vitamin C rich green vegetable
+Chia Seeds,Diabetes,Low,Low,Cold,1825,486,16,Omega-3 and fiber rich seeds
+Quinoa,Diabetes,Low,Low,Warm,365,222,8,Complete protein grain
+Mushroom Soup,None,Low,Low,Warm,3,100,5,Low calorie vegetable soup
+Celery Sticks,None,Low,Low,Cold,7,14,0.7,Hydrating low calorie vegetable
+Cabbage Salad,Hypertension,Low,Low,Cold,4,25,1.3,Vitamin K rich cruciferous vegetable
+Barley Porridge,Diabetes,Low,Low,Warm,7,354,12,Beta glucan soluble fiber
+Peas Protein,Diabetes,Low,Low,Warm,3,118,8,Plant based protein option
+Ginger Tea,None,Low,Low,Hot,14,5,0.1,Anti-inflammatory herbal drink
+Roasted Garlic,None,Low,Low,Warm,7,149,6.4,Natural flavor enhancer with benefits
+Bell Pepper Mix,None,Low,Low,Cold,7,30,1,Vitamin C rich colorful vegetables
+Mozzarella Low Fat,None,Low,Low,Cold,14,195,28,Low fat cheese source
+Cottage Cheese,None,Low,Low,Cold,10,163,28,High protein low calorie option
+Kale Chips,None,Low,Low,Cold,14,572,8,Crispy vegetable snack
+Salmon Fillet,Heart Disease,Low,Low,Warm,2,280,25,Omega-3 rich fatty fish
+Cod Fish,Heart Disease,Low,Low,Warm,2,82,18,White fish lean protein
+Halibut Steak,Heart Disease,Low,Low,Warm,3,111,21,Mild white fish protein
+Tilapia Fillet,Heart Disease,Low,Low,Warm,2,96,20,Affordable lean fish protein
+Sardines Canned,Heart Disease,Low,Low,Cold,180,208,25,Omega-3 rich canned fish
+Chicken Breast Grilled,Heart Disease,Low,Low,Warm,3,165,31,Skinless poultry protein
+Turkey Ground,Heart Disease,Low,Low,Warm,2,200,23,Lean ground meat option
+Beef Tenderloin,Hypertension,Low,Low,Warm,3,290,24,Red meat protein source
+Bison Steak,Heart Disease,Low,Low,Warm,3,185,25,Lean red meat alternative
+Venison Burger,Heart Disease,Low,Low,Warm,2,215,27,Game meat protein option
+Lamb Chops,None,Low,Low,Warm,3,290,25,Nutrient dense meat
+Pork Tenderloin,Heart Disease,Low,Low,Warm,3,210,29,Lean pork cut
+Duck Breast,None,Low,Low,Warm,2,337,30,Unique poultry protein
+Tofu Scramble,None,Low,Low,Warm,3,147,15,Plant based protein option
+Tempeh Steak,None,Low,Low,Warm,5,195,19,Fermented soy protein
+Edamame Pods,Diabetes,Low,Low,Warm,4,95,11,Young soybean snack
+Black Beans,Diabetes,Low,Low,Warm,5,339,24,Legume with fiber and protein
+Kidney Beans,Diabetes,Low,Low,Warm,5,333,24,Red beans nutrient source
+Pinto Beans,Diabetes,Low,Low,Warm,5,371,21,Colorful legume option
+White Beans,Diabetes,Low,Low,Warm,5,337,24,Mild flavored legumes
+Fava Beans,Diabetes,Low,Low,Warm,5,340,26,Unique bean protein source
+Mung Beans,Diabetes,Low,Low,Warm,5,347,24,Asian legume variety
+Lentils Red,Diabetes,Low,Low,Warm,5,353,25,Quick cooking legumes
+Lentils Green,Diabetes,Low,Low,Warm,5,330,25,Whole lentil variety
+Lentils Brown,Diabetes,Low,Low,Warm,5,360,25,Standard lentil type
+Split Peas,Diabetes,Low,Low,Warm,5,371,25,Yellow legume option
+Chickpeas,Diabetes,Low,Low,Warm,5,364,19,Versatile legume protein
+Asparagus Steamed,None,Low,Low,Warm,2,27,3,Tender green vegetable
+Artichoke Hearts,None,Low,Low,Warm,3,47,3.3,Unique vegetable option
+Green Beans,None,Low,Low,Warm,3,31,2,Fresh pod vegetable
+Okra Fried,None,Low,Low,Warm,2,175,3,Southern vegetable style
+Cauliflower Rice,Diabetes,Low,Low,Warm,2,25,2,Low carb rice alternative
+Broccoli Rabe,None,Low,Low,Warm,2,35,3.7,Bitter green vegetable
+Bok Choy,None,Low,Low,Warm,2,13,1.5,Asian leafy green
+Kale Salad,None,Low,Low,Cold,2,49,3.3,Nutrient dense leafy green
+Lettuce Mix,None,Low,Low,Cold,3,15,1.2,Fresh salad greens
+Arugula Salad,None,Low,Low,Cold,2,25,2.6,Peppery leafy green
+Watercress,None,Low,Low,Cold,2,11,2.3,Peppery water vegetable
+Endive Salad,None,Low,Low,Cold,3,17,1.2,Chicory family green
+Radicchio,None,Low,Low,Cold,7,23,1.2,Purple bitter green
+Swiss Chard,None,Low,Low,Warm,3,19,1.8,Colorful leafy green
+Collard Greens,None,Low,Low,Warm,3,33,3,Traditional Southern green
+Mustard Greens,None,Low,Low,Warm,3,27,3.2,Spicy leafy green
+Turnip Greens,None,Low,Low,Warm,3,29,2.2,Root vegetable greens
+Beet Greens,None,Low,Low,Warm,2,23,2.2,Beet plant greens
+Fennel Salad,None,Low,Low,Cold,4,31,1.2,Anise flavored vegetable
+Celery Root,None,Low,Low,Cold,14,42,1.5,Root vegetable option
+Rutabaga,Diabetes,Low,Low,Warm,14,36,1.2,Root vegetable alternative
+Turnip Root,None,Low,Low,Warm,14,36,1.1,White root vegetable
+Radish Salad,None,Low,Low,Cold,7,16,0.7,Peppery root vegetable
+Jicama Sticks,None,Low,Low,Cold,7,35,0.7,Crunchy root vegetable
+Parsnip Roasted,None,Low,Low,Warm,7,75,1.2,Sweet root vegetable
+Beet Root,None,Low,Low,Warm,14,43,1.7,Sweet earthy vegetable
+Carrot Juice,None,Low,Low,Cold,7,41,0.9,Liquid vegetable nutrition
+Butternut Squash,Diabetes,Low,Low,Warm,14,45,1,Orange winter squash
+Acorn Squash,None,Low,Low,Warm,14,40,0.9,Green winter squash
+Zucchini Summer,None,Low,Low,Warm,2,19,1.4,Green summer squash
+Yellow Squash,None,Low,Low,Warm,2,21,1.4,Light summer squash
+Pattypan Squash,None,Low,Low,Warm,3,20,1.3,Unique squash shape
+Spaghetti Squash,Diabetes,Low,Low,Warm,7,31,0.8,Pasta alternative squash
+Delicata Squash,None,Low,Low,Warm,14,36,0.6,Sweet winter squash
+Kabocha Squash,Diabetes,Low,Low,Warm,14,35,0.6,Japanese pumpkin
+Tomato Red,None,Medium,Low,Warm,5,18,0.9,Classic red fruit vegetable
+Tomato Cherry,None,Low,Low,Cold,4,27,1.3,Small sweet tomatoes
+Tomato Beefsteak,None,Low,Low,Warm,5,21,1,Large meaty tomato
+Tomato Heirloom,None,Low,Low,Warm,4,19,0.9,Specialty colored tomato
+Tomato Green,None,Low,Low,Warm,4,28,1.3,Unripe tomato option
+Eggplant Roasted,None,Low,Low,Warm,3,35,0.8,Purple nightshade vegetable
+Bell Pepper Red,None,Medium,Low,Cold,7,37,1.2,Sweet red pepper
+Bell Pepper Yellow,None,Medium,Low,Cold,7,27,0.9,Sweet yellow pepper
+Bell Pepper Orange,None,Medium,Low,Cold,7,30,1,Sweet orange pepper
+Bell Pepper Green,None,Low,Low,Cold,7,31,1,Mild green pepper
+Poblano Pepper,None,Low,Low,Warm,7,30,1,Mild chili pepper
+Jalapeno Pepper,None,Low,Low,Cold,7,29,1,Spicy pepper option
+Habanero Pepper,None,Low,Low,Cold,7,40,1.4,Very hot chili pepper
+Chili Pepper,None,Low,Low,Warm,7,40,2,Medium spicy pepper
+Onion Yellow,None,Low,Low,Cold,30,40,1.1,Standard onion
+Onion Red,None,Low,Low,Cold,30,37,1,Sweet red onion
+Onion White,None,Low,Low,Cold,30,36,1,Mild white onion
+Onion Sweet Vidalia,None,Low,Low,Cold,30,40,1,Very sweet onion
+Leek Vegetable,None,Low,Low,Warm,7,54,2.2,Mild onion family
+Garlic Clove,None,Low,Low,Cold,180,149,6.4,Pungent aromatic bulb
+Shallot,None,Low,Low,Cold,30,72,2.5,Mild garlic onion
+Scallion Green,None,Low,Low,Cold,3,32,1.9,Young onion option
+Ginger Root,None,Low,Low,Cold,30,80,1.8,Spicy aromatic root
+Turmeric Root,None,Low,Low,Cold,30,354,9.7,Golden spice root
+Horseradish,None,Low,Low,Cold,30,48,1.2,Pungent root vegetable
+Cucumber Standard,None,Low,Low,Cold,7,16,0.7,Regular green cucumber
+Cucumber Hothouse,None,Low,Low,Cold,7,15,0.6,Seedless cucumber
+Cucumber Kirby,None,Low,Low,Cold,5,14,0.6,Small pickling cucumber
+Zucchini Green,None,Low,Low,Warm,2,19,1.4,Dark green squash
+Zucchini Yellow,None,Low,Low,Warm,2,21,1.4,Light yellow squash
+Avocado Hass,None,Low,Low,Cold,5,160,2,Creamy nutty fruit
+Avocado Fuerte,None,Low,Low,Cold,5,160,2,Buttery avocado
+Avocado Green,None,Low,Low,Cold,5,160,2,Alternative avocado
+Olive Brown,None,Low,Low,Cold,730,115,1,Preserved fruit
+Olive Green,None,Low,Low,Cold,730,115,1,Young olive
+Capers Small,None,Low,Low,Cold,365,23,2.4,Pickled flower bud
+Apple Red Delicious,None,Medium,Low,Cold,30,52,0.3,Sweet red apple
+Apple Granny Smith,None,Low,Low,Cold,30,52,0.3,Tart green apple
+Apple Golden,None,Medium,Low,Cold,30,57,0.3,Sweet yellow apple
+Apple Honeycrisp,None,Medium,Low,Cold,30,54,0.3,Crisp modern apple
+Apple Fuji,None,Medium,Low,Cold,30,56,0.3,Sweet Japanese apple
+Apple Pink Lady,None,Medium,Low,Cold,30,52,0.3,Crisp pink apple
+Apple Jazz,None,Medium,Low,Cold,30,58,0.3,Hybrid apple variety
+Pear Bartlett,None,Medium,Low,Cold,7,57,0.4,Sweet juicy pear
+Pear Bosc,None,Medium,Low,Cold,7,57,0.4,Brown rustic pear
+Pear Anjou,None,Medium,Low,Cold,7,55,0.4,Bumpy green pear
+Pear Asian,None,Medium,Low,Cold,7,42,0.4,Crisp round pear
+Banana Yellow,Diabetes,High,Low,Cold,5,89,1.1,Ripe banana
+Banana Plantain,None,Medium,Low,Warm,7,122,1,Cooking banana
+Orange Navel,None,Medium,Low,Cold,14,47,0.9,Seedless orange
+Orange Valencia,None,High,Low,Cold,14,47,0.9,Juicy orange variety
+Tangerine Mandarin,None,Medium,Low,Cold,7,47,0.7,Small citrus fruit
+Grapefruit Pink,None,Medium,Low,Cold,14,42,0.8,Tart pink citrus
+Grapefruit White,None,Low,Low,Cold,14,42,0.8,Classic grapefruit
+Lemon Fresh,None,Low,Low,Cold,30,29,1.1,Sour citrus
+Lime Green,None,Low,Low,Cold,30,30,0.7,Acidic citrus fruit
+Lime Key,None,Low,Low,Cold,30,32,0.9,Small citrus
+Strawberry Fresh,None,Low,Low,Cold,3,32,0.7,Sweet red berry
+Strawberry Organic,None,Low,Low,Cold,2,32,0.7,Pesticide free berry
+Blueberry Fresh,None,Low,Low,Cold,5,57,0.7,Blue antioxidant berry
+Blueberry Wild,None,Low,Low,Cold,5,57,0.7,Small blue berry
+Raspberry Fresh,None,Low,Low,Cold,2,52,1.2,Tart red berry
+Raspberry Black,None,Low,Low,Cold,1,52,1.2,Dark berry
+Blackberry Fresh,None,Low,Low,Cold,2,43,1.4,Black berry
+Gooseberry,None,Low,Low,Cold,4,44,0.8,Tart green berry
+Currant Red,None,Low,Low,Cold,3,56,1.4,Tiny red berry
+Currant Black,None,Low,Low,Cold,3,63,1.6,Black berry variety
+Cranberry Fresh,None,Low,Low,Cold,14,46,0.4,Tart red berry
+Cranberry Dried,None,High,Low,Cold,365,308,0.4,Concentrated berry
+Mulberry Fresh,None,Low,Low,Cold,2,43,1.4,Purple berry
+Elderberry,None,Low,Low,Cold,3,73,0.7,Dark purple berry
+Acai Berry,None,Low,Low,Cold,2,70,1.2,Brazilian superfood
+Goji Berry,None,Low,Low,Cold,365,98,3.6,Red dried berry
+Mango Ripe,None,High,Low,Cold,5,60,0.8,Tropical sweet fruit
+Mango Green,None,Low,Low,Cold,5,60,0.8,Unripe mango
+Papaya Yellow,None,High,Low,Cold,3,43,0.5,Orange tropical fruit
+Papaya Green,None,Low,Low,Cold,3,43,0.5,Unripe papaya
+Pineapple Ripe,None,High,Low,Cold,7,50,0.5,Golden tropical fruit
+Pineapple Fresh,None,High,Low,Cold,7,50,0.5,Sweet pineapple
+Coconut Fresh,None,Low,Low,Cold,180,354,3.3,Tropical nut
+Coconut Dried,None,Low,Low,Cold,365,660,7,Shredded coconut
+Kiwi Fruit,None,Low,Low,Cold,14,61,1.1,Green tangy fruit
+Kiwi Gold,None,Medium,Low,Cold,14,61,1,Yellow kiwi
+Melon Cantaloupe,None,High,Low,Cold,7,34,0.8,Orange melon
+Melon Honeydew,None,High,Low,Cold,7,36,0.5,Green melon
+Melon Watermelon,None,High,Low,Cold,7,30,0.6,Red melon
+Kiwano Horned,None,Low,Low,Cold,14,44,0.8,Spiky melon
+Passion Fruit,None,High,Low,Cold,7,97,2.2,Exotic tart fruit
+Pomegranate,None,Medium,Low,Cold,30,83,1.7,Seeded fruit
+Starfruit,None,Low,Low,Cold,7,31,0.6,Star shaped fruit
+Dragon Fruit,None,Low,Low,Cold,5,60,1.2,Pink exotic fruit
+Lychee Fresh,None,Medium,Low,Cold,5,66,0.8,Asian nodule fruit
+Rambutan,None,Medium,Low,Cold,3,82,0.9,Hairy tropical fruit
+Durian,None,High,Low,Cold,3,147,1.5,Pungent tropical
+Persimmon,None,High,Low,Cold,7,81,0.6,Orange autumn fruit
+Date Medjool,None,High,Low,Cold,365,277,1.8,Sweet dried date
+Date Deglet,None,High,Low,Cold,365,282,2.5,California date
+Prune Dried,None,High,Low,Cold,365,240,2.2,Dried plum
+Apricot Dried,None,High,Low,Cold,365,241,3.4,Dried stone fruit
+Raisin Black,None,High,Low,Cold,365,299,3,Dried grape
+Raisin Golden,None,High,Low,Cold,365,299,3,Golden dried grape
+Almond Raw,None,Low,Low,Cold,365,579,21,Tree nut
+Almond Roasted,None,Low,Low,Cold,365,579,21,Cooked nut
+Walnut Raw,None,Low,Low,Cold,365,654,15,Brain nut
+Walnut Black,None,Low,Low,Cold,365,654,15,Strong walnut
+Pecan Raw,None,Low,Low,Cold,365,691,9,Southern nut
+Pecan Roasted,None,Low,Low,Cold,365,691,9,Cooked pecan
+Cashew Raw,None,Low,Low,Cold,365,553,18,Creamy nut
+Cashew Roasted,None,Low,Low,Cold,365,553,18,Roasted cashew
+Macadamia Nut,None,Low,Low,Cold,365,718,7.9,Buttery nut
+Pistachio,None,Low,Low,Cold,365,560,20,Green nut
+Brazil Nut,None,Low,Low,Cold,365,656,14,Large nut
+Pine Nut,None,Low,Low,Cold,365,688,14,Tree nut
+Hazelnut,None,Low,Low,Cold,365,628,15,Filbert nut
+Chestnut Roasted,None,Low,Low,Warm,14,245,2.4,Sweet nut
+Peanut Roasted,None,Low,Low,Cold,365,567,26,Legume nut
+Peanut Butter,None,Low,Low,Cold,365,594,25,Ground peanut
+Tahini,None,Low,Low,Cold,365,595,17,Sesame butter
+Sunflower Seed,None,Low,Low,Cold,365,584,24,Black seed
+Pumpkin Seed,None,Low,Low,Cold,365,446,19,Green seed
+Sesame Seed,None,Low,Low,Cold,365,573,18,Tiny seed
+Flax Seed,None,Low,Low,Cold,365,534,18,Brown seed
+Hemp Seed,None,Low,Low,Cold,365,553,10,Nutritious seed
+Chia Seed,Diabetes,Low,Low,Cold,1825,486,17,Super seed
+Poppy Seed,None,Low,Low,Cold,365,525,20,Blue seed
+Caraway Seed,None,Low,Low,Cold,365,333,20,Spice seed
+Fennel Seed,None,Low,Low,Cold,365,345,16,Anise seed
+Cumin Seed,None,Low,Low,Cold,365,375,18,Brown seed
+Coriander Seed,None,Low,Low,Cold,365,298,12,Spice seed
+Mustard Seed,None,Low,Low,Cold,365,508,26,Pungent seed
+Fenugreek Seed,None,Low,Low,Cold,365,323,23,Maple seed
+Milk Whole,None,Low,Low,Cold,7,60,3.2,Full fat milk
+Milk Skim,None,Low,Low,Cold,7,32,3.4,Fat free milk
+Milk Two Percent,None,Low,Low,Cold,7,49,3.3,Reduced milk
+Milk One Percent,None,Low,Low,Cold,7,42,3.4,Low fat milk
+Milk Almond,None,Low,Low,Cold,14,30,1,Plant milk
+Milk Soy,None,Low,Low,Cold,14,33,3.3,Bean milk
+Milk Coconut,None,Low,Low,Cold,14,45,0.4,Tropical milk
+Milk Rice,None,Low,Low,Cold,14,45,0.7,Grain milk
+Milk Oat,None,Low,Low,Cold,14,46,2.1,Oat milk
+Milk Cashew,None,Low,Low,Cold,14,39,0.8,Nut milk
+Milk Hemp,None,Low,Low,Cold,14,40,1.6,Seed milk
+Milk Hazelnut,None,Low,Low,Cold,14,35,1,Nut milk
+Yogurt Plain,None,Low,Low,Cold,14,59,10,Unflavored yogurt
+Yogurt Greek,None,Low,Low,Cold,15,59,10,Strained yogurt
+Yogurt Icelandic,None,Low,Low,Cold,15,100,17,Thick yogurt
+Kefir Probiotic,None,Low,Low,Cold,14,99,3.4,Fermented milk
+Cheese Cheddar,None,Low,Low,Cold,180,403,25,Orange cheese
+Cheese Swiss,None,Low,Low,Cold,180,380,28,Holey cheese
+Cheese Brie,None,Low,Low,Cold,30,334,20,Soft cheese
+Cheese Feta,None,Low,Low,Cold,30,264,21,Crumbly white
+Cheese Goat,None,Low,Low,Cold,30,285,21,Tangy white
+Cheese Blue,None,Low,Low,Cold,180,353,21,Veined cheese
+Cheese Mozzarella,None,Low,Low,Cold,14,280,28,Mild fresh
+Cheese Parmesan,None,Low,Low,Cold,365,431,38,Hard cheese
+Cheese Asiago,None,Low,Low,Cold,180,401,30,Italian cheese
+Cheese Oaxaca,None,Low,Low,Cold,7,322,25,String cheese
+Butter Salted,None,Low,High,Cold,180,717,0.9,Dairy fat
+Butter Unsalted,None,Low,Low,Cold,180,717,0.9,Plain butter
+Ghee Clarified,None,Low,Low,Cold,365,882,0,Clear fat
+Cream Heavy,None,Low,Low,Cold,14,340,2.2,Rich dairy
+Cream Sour,None,Low,Low,Cold,14,198,3.7,Tangy cream
+Cream Whipped,None,Low,Low,Cold,7,383,2.2,Aerated cream
+Egg Whole,None,Low,Low,Cold,30,155,13,Complete nutrient
+Egg White,Heart Disease,Low,Low,Cold,30,52,11,Protein only
+Egg Yolk,None,Low,Low,Cold,30,322,16,Yellow nutrient
+Egg Quail,None,Low,Low,Cold,30,158,13,Tiny egg
+Egg Duck,None,Low,Low,Cold,30,185,13,Large egg
+Oil Olive Extra,None,Low,Low,Cold,730,884,0,Premium oil
+Oil Olive Virgin,None,Low,Low,Cold,730,884,0,Cold pressed
+Oil Olive Refined,None,Low,Low,Cold,730,884,0,Processed oil
+Oil Coconut,None,Low,Low,Cold,730,892,0,Tropical oil
+Oil Avocado,None,Low,Low,Cold,730,884,0,Creamy oil
+Oil Sesame,None,Low,Low,Cold,365,884,0,Nutty oil
+Oil Grapeseed,None,Low,Low,Cold,365,884,0,Light oil
+Oil Almond,None,Low,Low,Cold,365,884,0,Sweet oil
+Oil Walnut,None,Low,Low,Cold,365,884,0,Toasted oil
+Oil Flax,None,Low,Low,Cold,180,884,0,Omega oil
+Rice White,Diabetes,Low,Low,Warm,365,130,2.7,Polished rice
+Rice Brown,Diabetes,Low,Low,Warm,365,112,2.6,Whole grain
+Rice Black,Diabetes,Low,Low,Warm,365,100,5,Wild rice
+Rice Jasmine,Diabetes,Low,Low,Warm,365,160,3,Fragrant rice
+Rice Basmati,Diabetes,Low,Low,Warm,365,130,2.7,Long grain
+Rice Arborio,Diabetes,Low,Low,Warm,365,130,3,Risotto rice
+Bread White,Diabetes,Low,Low,Warm,4,265,9,Refined bread
+Bread Wheat,Diabetes,Low,Low,Warm,4,270,11,Whole grain
+Bread Rye,Diabetes,Low,Low,Warm,4,259,9,Dark bread
+Bread Pumpernickel,Diabetes,Low,Low,Warm,5,263,10,Dense dark
+Bread Sourdough,Diabetes,Low,Low,Warm,5,270,10,Tangy bread
+Bread Multigrain,Diabetes,Low,Low,Warm,4,268,13,Mixed grain
+Bread Spelt,Diabetes,Low,Low,Warm,4,246,10,Ancient grain
+Pasta Wheat,Diabetes,Low,Low,Warm,365,131,5,Regular pasta
+Pasta Whole,Diabetes,Low,Low,Warm,365,120,6.3,Whole grain
+Pasta Spelt,Diabetes,Low,Low,Warm,365,155,8,Ancient grain
+Pasta Chickpea,Diabetes,Low,Low,Warm,365,270,15,Legume pasta
+Pasta Lentil,Diabetes,Low,Low,Warm,365,280,14,Red pasta
+Pasta Rice,Diabetes,Low,Low,Warm,365,120,2.8,Gluten free
+Pasta Corn,Diabetes,Low,Low,Warm,365,129,2.7,Gluten free
+Cereal Oat,Diabetes,Low,Low,Warm,365,389,17,Breakfast grain
+Cereal Wheat,Diabetes,Low,Low,Warm,365,363,14,Wheat based
+Cereal Corn,Diabetes,Medium,Low,Warm,365,383,9,Corn flakes
+Cereal Rice,Diabetes,Low,Low,Warm,365,380,6,Rice based
+Cereal Granola,Diabetes,High,Low,Warm,365,471,10,Clusters mix
+Flour Wheat,Diabetes,Low,Low,Warm,365,359,10,Grain powder
+Flour Almond,None,Low,Low,Cold,365,579,21,Nut flour
+Flour Coconut,None,Low,Low,Cold,365,660,9,Tropical flour
+Cornmeal,Diabetes,Low,Low,Warm,365,381,8.2,Corn flour
+Polenta,Diabetes,Low,Low,Warm,365,104,3,Corn mush
+Bran Wheat,Diabetes,Low,Low,Warm,365,346,16,Grain husk
+Germ Wheat,Diabetes,Low,Low,Warm,365,432,27,Grain center
+Sugar White,Diabetes,High,Low,Cold,730,387,0,Refined sugar
+Sugar Brown,Diabetes,High,Low,Cold,730,375,0,Moist sugar
+Sugar Coconut,Diabetes,High,Low,Cold,730,375,0,Palm sugar
+Honey Raw,Diabetes,High,Low,Cold,730,288,0.3,Natural sweetener
+Maple Syrup,Diabetes,High,Low,Cold,730,260,0,Tree syrup
+Stevia,Diabetes,Low,Low,Cold,730,0,0,Zero calorie
+Monk Fruit,Diabetes,Low,Low,Cold,730,0,0,Natural sugar
+Xylitol,Diabetes,Low,Low,Cold,730,240,0,Sugar alcohol
+Erythritol,Diabetes,Low,Low,Cold,730,20,0,Sugar alcohol
+Sorbitol,Diabetes,Low,Low,Cold,730,240,0,Sugar alcohol
+Aspartame,Diabetes,Low,Low,Cold,730,4,0,Artificial
+Sucralose,Diabetes,Low,Low,Cold,730,0,0,Artificial
+Saccharin,Diabetes,Low,Low,Cold,730,5,0,Artificial
+Chocolate Dark,None,High,Low,Cold,365,598,12,Cocoa dessert
+Chocolate Milk,None,High,Low,Cold,365,535,8,Sweet chocolate
+Chocolate White,None,High,Low,Cold,365,573,1,Cocoa butter
+Cocoa Powder,None,Low,Low,Cold,730,230,12,Pure cocoa
+Carob Powder,None,Low,Low,Cold,730,295,5.2,Chocolate alt
+Coffee Regular,None,Low,Low,Hot,730,0,0.1,Caffeine drink
+Coffee Decaf,None,Low,Low,Hot,730,0,0.1,Caffeine free
+Tea Green,None,Low,Low,Hot,365,0,0,Antioxidant tea
+Tea Black,None,Low,Low,Hot,365,0,0.1,Caffeinated tea
+Tea White,None,Low,Low,Hot,365,0,0,Delicate tea
+Tea Herbal,None,Low,Low,Hot,365,0,0,Plant tea
+Tea Oolong,None,Low,Low,Hot,365,0,0.1,Traditional tea
+Tea Matcha,None,Low,Low,Hot,365,30,1.2,Powder tea
+Tea Chamomile,None,Low,Low,Hot,365,0,0,Soothing tea
+Tea Peppermint,None,Low,Low,Hot,365,0,0,Fresh tea
+Tea Ginger,None,Low,Low,Hot,365,0,0,Spicy tea
+Tea Turmeric,None,Low,Low,Hot,365,0,0,Golden tea
+Wine Red,None,Low,Low,Cold,730,88,0.3,Aged wine
+Wine White,None,Low,Low,Cold,730,84,0,Light wine
+Wine Rose,None,Low,Low,Cold,730,83,0,Pink wine
+Beer Light,None,Low,Low,Cold,365,37,0.4,Low calorie
+Beer Dark,None,Low,Low,Cold,365,40,0.5,Heavy beer
+Beer Stout,None,Low,Low,Cold,365,41,0.6,Dark beer
+Vodka,None,Low,Low,Cold,730,64,0,Clear spirit
+Gin,None,Low,Low,Cold,730,69,0,Botanical
+Rum Light,None,Low,Low,Cold,730,69,0,Caribbean
+Rum Dark,None,Low,Low,Cold,730,73,0,Heavy rum
+Tequila,None,Low,Low,Cold,730,66,0,Agave spirit
+Whiskey,None,Low,Low,Cold,730,70,0.1,Oak aged
+Brandy,None,Low,Low,Cold,730,73,0,Fruit spirit
+Sake,None,Low,Low,Cold,730,134,0.5,Rice wine
+Vinegar Apple,None,Low,High,Cold,730,18,0,Tart liquid
+Vinegar Balsamic,None,Low,Low,Cold,730,88,0,Sweet vinegar
+Vinegar Rice,None,Low,Low,Cold,730,21,0.1,Mild vinegar
+Vinegar White,None,Low,Low,Cold,730,18,0,Clear vinegar
+Vinegar Red Wine,None,Low,Low,Cold,730,19,0,Wine vinegar
+Sauce Soy,None,Low,High,Cold,730,68,11,Salty sauce
+Sauce Tamari,None,Low,High,Cold,730,70,12,Wheat free soy
+Sauce Coconut Aminos,None,Low,Low,Cold,365,45,5.1,Alternative soy
+Sauce Hot Sriracha,None,Low,Low,Cold,365,82,3.3,Spicy sauce
+Sauce Tabasco,None,Low,Low,Cold,730,110,2,Pepper sauce
+Paste Tomato,None,Low,Low,Cold,180,82,3.9,Concentrated
+Paste Miso,None,Low,High,Cold,365,183,11,Fermented bean
+Paste Tahini,None,Low,Low,Cold,365,595,17,Sesame paste
+Sauce Worcestershire,None,Low,High,Cold,730,55,0.9,Savory sauce
+Sauce Fish,None,Low,High,Cold,365,115,20,Asian sauce
+Sauce Oyster,None,Low,High,Cold,365,40,2,Shellfish sauce
+Sauce Hoisin,None,High,High,Cold,365,258,5,Chinese sauce
+Sauce Barbecue,Diabetes,High,Low,Cold,180,112,0.9,Sweet sauce
+Sauce Ranch,None,Low,High,Cold,180,437,2,Creamy dressing
+Seasoning Salt,None,Low,High,Cold,730,0,0,Mineral salt
+Seasoning Pepper,None,Low,Low,Cold,730,251,10,Black pepper
+Seasoning Garlic,None,Low,Low,Cold,730,331,17,Powder
+Seasoning Onion,None,Low,Low,Cold,730,285,10,Powder
+Seasoning Paprika,None,Low,Low,Cold,730,282,13,Red spice
+Seasoning Cumin,None,Low,Low,Cold,730,375,18,Brown spice
+Seasoning Cinnamon,None,Low,Low,Cold,730,247,3.9,Sweet spice
+Seasoning Nutmeg,None,Low,Low,Cold,730,525,5.8,Warm spice
+Seasoning Coriander,None,Low,Low,Cold,730,298,12,Seed spice
+Seasoning Chili,None,Low,Low,Cold,730,240,12,Hot spice
+Seasoning Oregano,None,Low,Low,Cold,730,338,11,Herb
+Seasoning Basil,None,Low,Low,Cold,730,295,3.2,Fresh herb
+Seasoning Thyme,None,Low,Low,Cold,730,276,9.1,Herb
+Seasoning Rosemary,None,Low,Low,Cold,730,330,6.6,Needle herb
+Seasoning Bay,None,Low,Low,Cold,730,313,7.6,Leaf herb
+Seasoning Sage,None,Low,Low,Cold,730,315,11,Herb
+Seasoning Parsley,None,Low,Low,Cold,7,36,2.7,Green herb
+Seasoning Cilantro,None,Low,Low,Cold,3,23,2.1,Asian herb
+Seasoning Dill,None,Low,Low,Cold,14,43,3.5,Feathery herb
+Seasoning Mint,None,Low,Low,Cold,7,70,3.7,Cooling herb
+Seasoning Tarragon,None,Low,Low,Cold,14,295,5.6,Subtle herb
+Seasoning Chives,None,Low,Low,Cold,7,30,2.7,Onion herb
+Mustard Yellow,None,Low,High,Cold,365,66,4.5,Tangy condiment
+Mustard Spicy,None,Low,High,Cold,365,90,5,Hot mustard
+Mustard Whole,None,Low,High,Cold,365,150,6,Seed mustard
+Ketchup,Diabetes,High,High,Cold,365,99,1.7,Sweet condiment
+Mayonnaise,None,Low,High,Cold,180,680,3.6,Creamy condiment
+Hummus,None,Low,Low,Cold,14,166,8,Chickpea dip
+Guacamole,None,Low,Low,Cold,2,160,2,Avocado spread
+Salsa Tomato,None,Low,Low,Cold,7,36,1,Fresh sauce
+Salsa Mango,None,High,Low,Cold,4,45,1,Tropical sauce
+Salsa Pineapple,None,High,Low,Cold,4,50,1,Sweet sauce
+Pesto,None,Low,Low,Cold,14,440,14,Herb sauce
+Aioli,None,Low,High,Cold,14,717,2,Garlic mayo
+Compote Apple,None,High,Low,Warm,30,85,0.2,Cooked fruit
+Jam Strawberry,None,High,Low,Cold,365,272,0.4,Fruit spread
+Jam Raspberry,None,High,Low,Cold,365,260,1.2,Berry spread
+Marmalade Orange,None,High,Low,Cold,365,287,0.3,Citrus spread
+Jelly Grape,Diabetes,High,Low,Cold,365,243,1,Purple spread
+Pickle Cucumber,None,Low,High,Cold,365,12,0.6,Fermented
+Sauerkraut,None,Low,High,Cold,365,27,1.3,Fermented cabbage
+Kimchi,None,Low,High,Cold,30,15,2,Spicy fermented
+Tempeh Fermented,None,Low,Low,Cold,14,195,19,Soy product
+Miso Paste,None,Low,High,Cold,365,183,11,Fermented bean
+Kombucha,None,Low,Low,Cold,30,30,0.3,Fermented tea
+Water Plain,None,Low,Low,Cold,480,0,0,Pure water
+Water Mineral,None,Low,Low,Cold,480,0,0,Mineral water
+Water Sparkling,None,Low,Low,Cold,365,0,0,Carbonated water
+Juice Water,None,Low,Low,Cold,480,0,0,Hydrating
+Juice Orange,Diabetes,High,Low,Cold,7,47,0.9,Citrus juice
+Juice Apple,Diabetes,High,Low,Cold,7,66,0.1,Apple juice
+Juice Cranberry,None,High,Low,Cold,14,46,0.4,Red juice
+Juice Lemonade,Diabetes,High,Low,Cold,7,52,0,Citrus drink
+Juice Tomato,None,Low,High,Cold,14,18,0.9,Vegetable juice
+Juice Carrot,None,High,Low,Cold,7,41,0.9,Orange juice
+Juice Beet,None,Low,Low,Cold,7,43,1.7,Red juice
+Juice Wheatgrass,None,Low,Low,Cold,3,30,2,Green juice
+Juice Ginger,None,Low,Low,Cold,7,60,1,Spicy juice
+Juice Turmeric,None,Low,Low,Cold,7,45,1,Golden juice
+Smoothie Fruit,None,Medium,Low,Cold,3,150,4,Blended fruit
+Smoothie Veggie,None,Low,Low,Cold,3,100,3,Vegetable blend
+Smoothie Green,None,Low,Low,Cold,3,120,5,Greens blend
+Smoothie Protein,None,Low,Low,Cold,3,200,25,Powder blend
+Aloe Juice,None,Low,Low,Cold,14,15,0.2,Plant juice
+Coconut Water,None,Medium,Low,Cold,14,44,0.7,Hydrating drink
+Coconut Juice,None,High,Low,Cold,14,230,1,Sweet liquid
+Sports Drink,Diabetes,High,Low,Cold,365,42,0,Electrolyte
+Energy Drink,Diabetes,High,Low,Cold,365,110,1,Caffeine drink
+Soda Cola,Diabetes,High,Low,Cold,365,42,0,Carbonated drink
+Soda Diet,Diabetes,Low,Low,Cold,365,1,0,Zero sugar
+Soda Lemon,Diabetes,High,Low,Cold,365,46,0,Citrus drink
+Soda Orange,Diabetes,High,Low,Cold,365,45,0,Orange drink
+Soda Grape,Diabetes,High,Low,Cold,365,62,0,Purple drink
+Soda Root,Diabetes,High,Low,Cold,365,42,0,Vanilla drink
+Broth Chicken,None,Low,Low,Warm,7,15,3,Protein liquid
+Broth Beef,None,Low,Low,Warm,7,20,3,Red meat liquid
+Broth Vegetable,None,Low,Low,Warm,7,15,1,Plant liquid
+Broth Bone,None,Low,Low,Warm,14,86,9,Gelatin rich
+Soup Chicken,None,Low,Low,Warm,4,120,12,Chicken liquid
+Soup Beef,None,Low,Low,Warm,4,150,15,Beef liquid
+Soup Vegetable,None,Low,Low,Warm,3,80,3,Vegetable liquid
+Soup Tomato,None,Low,Low,Warm,4,100,3,Red liquid
+Soup Mushroom,None,Low,Low,Warm,3,90,2,Fungi liquid
+Soup Minestrone,None,Low,Low,Warm,3,160,8,Vegetable soup
+Soup Lentil,None,Low,Low,Warm,3,230,18,Legume soup
+Soup Bean,None,Low,Low,Warm,3,240,15,Legume soup
+Soup Pea,None,Low,Low,Warm,3,200,12,Green soup
+Soup Butternut,None,Low,Low,Warm,3,150,4,Squash soup
+Soup Kale,None,Low,Low,Warm,3,130,7,Greens soup
+Soup Spinach,None,Low,Low,Warm,3,140,8,Greens soup
+Soup Onion,None,Low,Low,Warm,3,80,3,French style
+Soup Celery,None,Low,Low,Warm,3,90,2,Classic soup
+Soup Bamboo,None,Low,Low,Warm,3,100,2,Asian style
+Soup Miso,None,Low,High,Warm,3,150,8,Japanese style
+Soup Ramen,None,Low,Warm,Warm,3,280,9,Noodle soup
+Soup Pho,Diabetes,Low,Low,Warm,3,120,9,Vietnamese
+Soup Wonton,None,Low,Low,Warm,3,200,10,Chinese style
+Braise Beef,None,Low,Low,Warm,3,280,30,Braised meat
+Braise Chicken,None,Low,Low,Warm,3,250,28,Braised poultry
+Braise Pork,None,Low,Low,Warm,3,290,32,Braised meat
+Braise Lamb,None,Low,Low,Warm,3,310,35,Braised meat
+Braise Vegetable,None,Low,Low,Warm,2,120,4,Braised plant
+Stew Beef,None,Low,Low,Warm,4,320,25,Chunky meat
+Stew Chicken,None,Low,Low,Warm,4,280,22,Chunky poultry
+Stew Vegetable,None,Low,Low,Warm,3,150,4,Vegetable stew
+Stew Bean,None,Low,Low,Warm,3,200,15,Legume stew
+Curry Red,None,Low,Low,Warm,2,280,15,Spicy Thai
+Curry Green,None,Low,Low,Warm,2,260,12,Mild Thai
+Curry Yellow,None,Low,Low,Warm,2,240,10,Warm Thai
+Curry Chicken,None,Low,Low,Warm,2,300,28,Protein curry
+Curry Beef,None,Low,Low,Warm,2,350,32,Red meat curry
+Curry Vegetable,None,Low,Low,Warm,2,200,8,Plant curry
+Chili Meat,None,Low,Low,Warm,4,380,28,Meat stew
+Chili Bean,None,Low,Low,Warm,4,290,18,Vegetarian stew
+Chili Vegetable,None,Low,Low,Warm,3,200,8,Plant stew
+Goulash,None,Low,Low,Warm,4,350,25,Hungarian stew
+Jambalaya,None,Low,Low,Warm,3,380,18,Cajun rice
+Paella,None,Low,Low,Warm,3,420,16,Spanish rice
+Risotto,None,Low,Low,Warm,3,380,10,Creamy rice
+Ragu,None,Low,Low,Warm,2,300,20,Italian sauce
+Bolognese,None,Low,Low,Warm,2,320,22,Meat sauce
+Marinara,None,Low,Low,Warm,2,240,8,Tomato sauce
+Alfredo,None,Low,Low,Warm,2,380,12,Cream sauce
+Pesto,None,Low,Low,Cold,1,440,14,Herb sauce
+Carbonara,None,Low,Low,Warm,2,400,18,Egg sauce
+Aglio Olio,None,Low,Low,Warm,2,350,12,Garlic sauce
+Cacio Pepe,None,Low,Low,Warm,2,420,20,Cheese pepper
+Amatriciana,None,Low,Low,Warm,2,380,18,Tomato guanciale
+Pizza Margherita,Diabetes,Low,Low,Warm,2,285,12,Classic pizza
+Pizza Pepperoni,Diabetes,Low,Low,Warm,2,350,15,Meat pizza
+Pizza Vegetable,None,Low,Low,Warm,2,240,10,Plant pizza
+Pizza Hawaiian,Diabetes,High,Low,Warm,2,280,12,Pineapple pizza
+Sandwich Turkey,None,Low,Low,Cold,1,300,28,Deli sandwich
+Sandwich Beef,None,Low,Low,Cold,1,350,32,Roast sandwich
+Sandwich Chicken,None,Low,Low,Cold,1,320,30,Poultry sandwich
+Sandwich Tuna,Heart Disease,Low,Low,Cold,1,280,25,Fish sandwich
+Sandwich Veggie,None,Low,Low,Cold,1,200,8,Vegetable sandwich
+Burger Beef,None,Low,Low,Warm,1,380,28,Meat burger
+Burger Chicken,None,Low,Low,Warm,1,320,25,Poultry burger
+Burger Veggie,None,Low,Low,Warm,1,280,12,Plant burger
+Burger Turkey,None,Low,Low,Warm,1,310,26,Game burger
+Burrito Chicken,None,Low,Low,Warm,1,420,30,Wrap chicken
+Burrito Beef,None,Low,Low,Warm,1,480,35,Wrap beef
+Burrito Bean,None,Low,Low,Warm,1,380,15,Wrap legume
+Taco Chicken,None,Low,Low,Cold,1,180,18,Shell chicken
+Taco Beef,None,Low,Low,Cold,1,220,20,Shell beef
+Taco Fish,Heart Disease,Low,Low,Cold,1,190,16,Shell fish
+Taco Vegetable,None,Low,Low,Cold,1,150,8,Shell plant
+Enchilada,None,Low,Low,Warm,2,350,20,Rolled mexican
+Quesadilla,None,Low,Low,Warm,2,380,18,Cheese mexican
+Nachos,Diabetes,Low,High,Cold,2,480,12,Chip appetizer
+Fajita,None,Low,Low,Warm,1,280,22,Sizzle dish
+Tamale,None,Low,Low,Warm,1,280,8,Corn package
+Empanada,None,Low,Low,Warm,1,320,12,Pocket pastry
+Croissant Plain,None,Low,Low,Warm,1,406,9,Butter pastry
+Croissant Chocolate,Diabetes,High,Low,Warm,1,430,8,Sweet pastry
+Donut,Diabetes,High,Low,Warm,2,280,3,Fried dough
+Bagel Plain,None,Low,Low,Warm,4,245,9,Hole bread
+Bagel Whole Wheat,Diabetes,Low,Low,Warm,4,230,11,Grain bagel
+Muffin Blueberry,Diabetes,High,Low,Warm,2,450,7,Berry cake
+Muffin Chocolate,Diabetes,High,Low,Warm,2,480,8,Chocolate cake
+Pancake,Diabetes,High,Low,Warm,1,350,8,Breakfast cake
+Waffle,Diabetes,High,Low,Warm,1,400,9,Grid cake
+French Toast,Diabetes,High,Low,Warm,1,380,10,Egg bread
+Crepe Sweet,Diabetes,High,Low,Warm,1,280,6,Thin cake
+Crepe Savory,None,Low,Low,Warm,1,220,8,Thin wrap
+Scone,Diabetes,High,Low,Warm,1,320,6,Baked good
+Biscuit,None,Low,Low,Warm,2,280,6,Butter bread
+Crumpet,None,Low,Low,Warm,2,240,5,Bread cake
+Wafer,Diabetes,High,Low,Cold,30,468,2,Thin cookie
+Cookie Chocolate,Diabetes,High,Low,Cold,14,480,5,Sweet treat
+Cookie Sugar,Diabetes,High,Low,Cold,14,450,4,White cookie
+Cookie Oatmeal,Diabetes,High,Low,Cold,14,420,7,Brown cookie
+Cookie Ginger,Diabetes,High,Low,Cold,14,400,5,Spice cookie
+Brownie,Diabetes,High,Low,Cold,7,390,5,Chocolate cake
+Cake Vanilla,Diabetes,High,Low,Cold,7,380,3,Light cake
+Cake Chocolate,Diabetes,High,Low,Cold,7,420,4,Dark cake
+Cake Carrot,Diabetes,High,Low,Cold,7,400,4,Vegetable cake
+Cake Cheesecake,None,Medium,Low,Cold,7,540,7,Cheese cake
+Pie Apple,Diabetes,High,Low,Warm,4,320,3,Fruit pie
+Pie Pumpkin,Diabetes,High,Low,Warm,3,350,4,Gourd pie
+Pie Cherry,Diabetes,High,Low,Warm,3,340,3,Berry pie
+Pie Pecan,Diabetes,High,Low,Warm,3,520,6,Nut pie
+Pie Lemon,Diabetes,High,Low,Warm,2,360,4,Citrus pie
+Tart Fruit,Diabetes,High,Low,Cold,2,340,3,Pastry fruit
+Tart Almond,None,Low,Low,Cold,7,420,8,Nut tart
+Pudding Chocolate,Diabetes,High,Low,Cold,3,180,3,Creamy treat
+Pudding Vanilla,Diabetes,High,Low,Cold,3,160,3,Classic treat
+Pudding Rice,Diabetes,High,Low,Cold,3,200,4,Grain treat
+Pudding Tapioca,Diabetes,High,Low,Cold,3,220,4,Bubble treat
+Custard,Diabetes,High,Low,Cold,3,280,5,Egg treat
+Mousse Chocolate,Diabetes,High,Low,Cold,2,340,4,Fluffy treat
+Mousse Fruit,Diabetes,High,Low,Cold,2,280,3,Berry treat
+Tiramisu,Diabetes,High,Low,Cold,2,400,6,Italian dessert
+Cheesecake,None,Medium,Low,Cold,7,540,7,Cheese dessert
+Flan,Diabetes,High,Low,Cold,3,300,4,Caramel treat
+Ice Cream Vanilla,Diabetes,High,Low,Cold,30,137,2.3,Frozen treat
+Ice Cream Chocolate,Diabetes,High,Low,Cold,30,150,2.6,Dark frozen
+Ice Cream Strawberry,Diabetes,High,Low,Cold,30,127,2.1,Pink frozen
+Ice Cream Mint,Diabetes,High,Low,Cold,30,137,2.3,Green frozen
+Sorbet Fruit,Diabetes,High,Low,Cold,30,120,0.2,Frozen fruit
+Gelato Vanilla,Diabetes,High,Low,Cold,30,180,3,Italian frozen
+Gelato Chocolate,Diabetes,High,Low,Cold,30,200,3.2,Italian dark
+Popsicle,Diabetes,High,Low,Cold,30,80,0,Frozen bar
+Smoothie Acai,None,Low,Low,Cold,3,180,4,Brazilian smoothie
+Smoothie Protein,None,Low,Low,Cold,3,200,25,Supplement smoothie
+Fruit Plate,None,Low,Low,Cold,2,150,3,Mixed fruit
+Cheese Plate,None,Low,Low,Cold,7,400,25,Cheese board
+Charcuterie,None,Low,Low,Cold,7,520,32,Meat board
+Antipasto,None,Low,Low,Cold,7,480,28,Italian board
+Mezze Platter,None,Low,Low,Cold,7,450,18,Mediterranean
+Tapas Assorted,None,Low,Low,Cold,1,350,15,Spanish small
+Bruschetta,None,Low,Low,Warm,1,280,8,Toasted bread
+Crostini,None,Low,Low,Warm,1,240,6,Small bread
+Canapé,None,Low,Low,Cold,1,200,5,Fancy appetizer
+Appetizer Shrimp,Heart Disease,Low,Low,Cold,1,120,24,Seafood app
+Appetizer Meatball,None,Low,Low,Warm,2,280,15,Meat app
+Appetizer Vegetable,None,Low,Low,Cold,1,80,3,Plant app
+Appetizer Cheese,None,Low,Low,Cold,1,200,10,Dairy app
+Deviled Egg,None,Low,Low,Cold,2,160,6,Egg app
+Chicken Wing,None,Low,Low,Warm,2,320,28,Poultry app
+Buffalo Chicken,None,Low,Low,Warm,2,350,30,Spicy poultry
+Spring Roll,None,Low,Low,Cold,1,180,6,Asian app
+Egg Roll,None,Low,Low,Warm,1,200,8,Asian fried
+Dumpling,None,Low,Low,Warm,1,240,8,Asian pocket
+Pot Sticker,None,Low,Low,Warm,1,260,9,Pan asian
+Wonton,None,Low,Low,Cold,1,180,7,Asian wrapper
+Sushi Roll,None,Low,Low,Cold,1,260,10,Rice wrap
+Sashimi,Heart Disease,Low,Low,Cold,1,140,25,Raw fish
+Nigiri,Heart Disease,Low,Low,Cold,1,170,12,Rice and fish
+Tempura,None,Low,Low,Warm,1,320,12,Battered fried
+Edamame,None,Low,Low,Warm,1,95,11,Soy snack
+Gyoza,None,Low,Low,Warm,1,280,8,Japanese dumpling
+Takoyaki,None,Low,Low,Warm,1,420,8,Octopus ball
+Okonomiyaki,None,Low,Low,Warm,1,400,20,Savory pancake
+Yakitori,None,Low,Low,Warm,1,280,28,Grilled chicken
+Satay Chicken,None,Low,Low,Warm,1,320,25,Peanut skewer
+Skewer Beef,None,Low,Low,Warm,1,280,24,Meat skewer
+Skewer Vegetable,None,Low,Low,Warm,1,160,6,Plant skewer
+Kebab,None,Low,Low,Warm,1,380,28,Middle eastern
+Shawarma,None,Low,Low,Warm,1,420,32,Spice wrap
+Falafel,None,Low,Low,Warm,1,330,12,Bean ball
+Samosa,None,Low,Low,Warm,1,320,8,Indian pocket
+Pakora,None,Low,Low,Warm,1,280,10,Indian batter
+Dosa,None,Low,Low,Warm,1,280,7,Indian crepe
+Idli,None,Low,Low,Warm,1,240,4,Indian cake
+Uttapam,None,Low,Low,Warm,1,280,8,Indian savory
+Chaat,None,Low,Low,Cold,1,320,6,Indian snack
+Momos,None,Low,Low,Warm,1,280,8,Tibetan dumpling
+Thukpa,None,Low,Low,Warm,1,280,12,Tibetan soup
+Momo Steamed,None,Low,Low,Warm,1,260,7,Asian steamed
+Baozi,None,Low,Low,Warm,1,280,8,Chinese bun
+Bao Filled,None,Low,Low,Warm,1,350,10,Chubby bun
+Zongzi,None,Low,Low,Warm,7,280,6,Rice dumpling
+Mooncake,Diabetes,High,Low,Cold,30,420,4,Festival cake
+Chow Mein,None,Low,Low,Warm,1,380,14,Noodle dish
+Lo Mein,None,Low,Low,Warm,1,420,12,Soft noodle
+Chow Fun,None,Low,Low,Warm,1,400,13,Wide noodle
+Singapore Noodles,None,Low,Low,Warm,1,380,12,Curry noodle
+Pad Thai,None,Low,Low,Warm,1,400,9,Sweet noodle
+Pad See Ew,None,Low,Low,Warm,1,380,10,Dark noodle
+Pad Krapow,None,Low,Low,Warm,1,350,8,Basil noodle
+Yaki Udon,None,Low,Low,Warm,1,420,14,Stir noodle
+Yakisoba,None,Low,Low,Warm,1,400,12,Brown noodle
+Pad Woon Sen,None,Low,Low,Warm,1,360,10,Glass noodle
+Drunken Noodles,None,Low,Low,Warm,1,380,11,Spicy noodle
+Laksa,None,Low,Low,Warm,1,420,15,Coconut noodle
+Ramen Bowl,None,Low,Low,Warm,1,450,15,Japanese noodle
+Tonkotsu Ramen,None,Low,Low,Warm,1,480,18,Pork noodle
+Uni Pasta,None,Low,Low,Warm,2,580,28,Sea urchin
+Gnocchi,None,Low,Low,Warm,2,380,8,Potato dumpling
+Matzo Ball,None,Low,Low,Warm,1,280,5,Jewish dumpling
+Spätzle,None,Low,Low,Warm,2,320,10,German noodle
+Pierogi,None,Low,Low,Warm,1,300,9,Polish dumpling
+Ravioli,None,Low,Low,Warm,2,380,14,Stuffed italian
+Tortellini,None,Low,Low,Warm,2,400,15,Folded italian
+Lasagna,None,Low,Low,Warm,3,420,18,Layered pasta
+Baked Ziti,None,Low,Low,Warm,2,380,14,Cheese pasta
+Feta,None,Low,Low,Cold,30,264,21,Greek cheese
+Halloumi,None,Low,Low,Warm,30,390,33,Cyprus cheese
+Saganaki,None,Low,Low,Warm,1,440,24,Fried cheese
+Tzatziki,None,Low,Low,Cold,7,70,3,Yogurt sauce

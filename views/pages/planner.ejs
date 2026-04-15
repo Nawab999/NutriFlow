@@ -1,0 +1,297 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<%
+  const DAY_LABELS  = { monday:"Mon", tuesday:"Tue", wednesday:"Wed", thursday:"Thu", friday:"Fri", saturday:"Sat", sunday:"Sun" };
+  const DAY_FULL    = { monday:"Monday", tuesday:"Tuesday", wednesday:"Wednesday", thursday:"Thursday", friday:"Friday", saturday:"Saturday", sunday:"Sunday" };
+  const SLOT_LABELS = { breakfast:"Breakfast", lunch:"Lunch", dinner:"Dinner" };
+  const SLOT_ICONS  = { breakfast:"", lunch:"", dinner:"" };
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayStr = today.toDateString();
+  const fmtShort = d => d.toLocaleDateString("en-US", { month:"short", day:"numeric" });
+  const dailyTarget = calorieGoal || 2000;
+%>
+
+<!-- Header -->
+<section class="section-card planner-header">
+  <div class="planner-title-wrap">
+    <div>
+      <p class="eyebrow">Meal Planning</p>
+      <h1>Weekly Planner</h1>
+      <p class="text-muted">
+        <% if (weekOffset === 0) { %>This week<% } else if (weekOffset === 1) { %>Next week<% } else if (weekOffset === -1) { %>Last week<% } else { %><%= fmtShort(weekDates[0]) %> – <%= fmtShort(weekDates[6]) %><% } %>
+        &nbsp;&middot;&nbsp; <%= fmtShort(weekDates[0]) %> – <%= fmtShort(weekDates[6]) %>
+        &nbsp;&middot;&nbsp; <span style="color:var(--brand);font-weight:700">Target: <%= dailyTarget %> kcal/day</span>
+      </p>
+    </div>
+    <div class="planner-header-actions">
+      <div class="week-nav">
+        <a href="/planner?week=<%= weekOffset - 1 %>" class="btn-week-nav">&larr;</a>
+        <% if (weekOffset !== 0) { %><a href="/planner?week=0" class="btn-week-nav btn-week-today">Today</a><% } %>
+        <a href="/planner?week=<%= weekOffset + 1 %>" class="btn-week-nav">&rarr;</a>
+      </div>
+      <a href="/grocery-list" class="button button-ghost">Grocery List</a>
+      <form method="POST" action="/planner/clear-all" class="inline-form" onsubmit="return confirm('Clear the entire week?')">
+        <button type="submit" class="button button-ghost">Clear week</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Weekly summary -->
+  <div class="planner-week-summary">
+    <div class="week-stat"><strong><%= weekTotals.calories.toLocaleString() %></strong><small>kcal this week</small></div>
+    <div class="week-stat"><strong><%= weekTotals.protein.toFixed(0) %>g</strong><small>protein</small></div>
+    <div class="week-stat"><strong><%= formatCurrency(weekTotals.price) %></strong><small>total cost</small></div>
+    <div class="week-stat"><strong><%= Math.round(weekTotals.calories / 7) %></strong><small>avg kcal/day</small></div>
+    <div class="week-stat"><strong><%= Math.round((weekTotals.calories / (dailyTarget * 7)) * 100) %>%</strong><small>of weekly goal</small></div>
+  </div>
+</section>
+
+<!-- Planner table
+     Layout: rows = days, columns = Day label | Breakfast | Lunch | Dinner | Progress
+-->
+<div class="planner-grid-wrap">
+  <table class="planner-table">
+
+    <!-- Column headers -->
+    <thead>
+      <tr class="planner-thead-row">
+        <th class="planner-th planner-th-day"></th>
+        <% for (const slot of SLOTS) { %>
+          <th class="planner-th planner-th-slot"><%= SLOT_LABELS[slot] %></th>
+        <% } %>
+        <th class="planner-th planner-th-progress">Daily Progress</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% DAYS.forEach((day, di) => {
+        const isToday = weekDates[di].toDateString() === todayStr;
+        const dayCal  = dayTotals[day].calories;
+        const calPct  = Math.min(Math.round((dayCal / dailyTarget) * 100), 100);
+        const calOver = dayCal > dailyTarget;
+      %>
+      <tr class="planner-row <%= isToday ? 'planner-row-today' : '' %>">
+
+        <!-- Day label -->
+        <td class="planner-td planner-td-day">
+          <div class="planner-day-label">
+            <strong><%= DAY_LABELS[day] %></strong>
+            <span><%= fmtShort(weekDates[di]) %></span>
+            <% if (isToday) { %><span class="today-badge">Today</span><% } %>
+          </div>
+        </td>
+
+        <!-- Meal slots: Breakfast, Lunch, Dinner -->
+        <% for (const slot of SLOTS) {
+          const slotItems = plan.days[day]?.[slot] || [];
+        %>
+        <td class="planner-td planner-td-slot" id="slot-<%= day %>-<%= slot %>">
+          <div class="planner-cell">
+
+            <!-- Items already added -->
+            <% slotItems.forEach(item => {
+              const meal = item.meal;
+              if (!meal) return;
+              const vis = getMealVisual(meal);
+            %>
+              <div class="planner-meal-row">
+                <div class="planner-meal-thumb" style="<%= vis.backgroundStyle %>">
+                  <img src="<%= vis.imageUrl %>" alt="<%= meal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="planner-meal-row-info">
+                  <span class="planner-meal-row-name" title="<%= meal.meal_name %>"><%= meal.meal_name %></span>
+                  <span class="planner-meal-row-kcal"><%= meal.calories || 0 %> kcal &middot; <%= formatCurrency(meal.price) %></span>
+                </div>
+                <form method="POST" action="/planner/clear" class="inline-form">
+                  <input type="hidden" name="day"        value="<%= day %>">
+                  <input type="hidden" name="slot"       value="<%= slot %>">
+                  <input type="hidden" name="itemId"     value="<%= item._id %>">
+                  <input type="hidden" name="weekOffset" value="<%= weekOffset %>">
+                  <button type="submit" class="planner-row-delete">Delete</button>
+                </form>
+              </div>
+            <% }) %>
+
+            <!-- Add button -->
+            <button class="planner-add-btn"
+              onclick="openPicker('<%= day %>','<%= slot %>','<%= weekOffset %>')"
+              title="Add <%= SLOT_LABELS[slot] %>">
+              <span class="planner-add-icon">+</span>
+              <span>Add</span>
+            </button>
+
+          </div>
+        </td>
+        <% } %>
+
+        <!-- Progress column -->
+        <td class="planner-td planner-td-progress">
+          <div class="planner-progress-cell">
+            <div class="day-tracker-label">
+              <span class="<%= calOver ? 'tracker-over' : '' %>"><%= dayCal %> kcal</span>
+              <span class="tracker-pct"><%= calPct %>%</span>
+            </div>
+            <div class="day-tracker-bar-bg">
+              <div class="day-tracker-bar-fill <%= calOver ? 'tracker-bar-over' : calPct >= 90 ? 'tracker-bar-good' : calPct >= 50 ? 'tracker-bar-mid' : '' %>"
+                   style="width:<%= calPct %>%"></div>
+            </div>
+            <div class="day-tracker-target">/ <%= dailyTarget %> kcal</div>
+            <button type="button" class="btn-add-day-cart"
+              onclick="addDayToCart(this,'<%= day %>','<%= weekOffset %>')">Add to cart</button>
+          </div>
+        </td>
+
+      </tr>
+      <% }) %>
+    </tbody>
+
+  </table>
+</div>
+
+<!-- Meal Picker Modal -->
+<div class="planner-modal-overlay" id="pickerOverlay" onclick="if(event.target===this)closePicker()">
+  <div class="planner-modal" role="dialog" aria-modal="true">
+
+    <div class="planner-modal-header">
+      <div>
+        <h2 id="pickerTitle">Choose a meal</h2>
+        <p class="text-muted" id="pickerSubtitle"></p>
+      </div>
+      <button class="planner-modal-close" onclick="closePicker()">&times;</button>
+    </div>
+
+    <form class="planner-search-form" onsubmit="return false">
+      <input type="text" id="pickerSearch" placeholder="Search meals…" autocomplete="off"
+             oninput="debounceSearch(this.value)">
+    </form>
+
+    <% if (userProfile?.allergies?.length && userProfile.allergies[0] !== 'None') { %>
+    <div class="picker-profile-notice">
+      <span>Hiding meals with <strong><%= (userProfile.allergies || []).filter(a=>a!=='None').join(', ') %></strong> (your allergy settings).</span>
+    </div>
+    <% } %>
+
+    <div class="planner-picker-list" id="pickerGrid">
+      <% pickerMeals.forEach(m => {
+        const vis = getMealVisual(m);
+      %>
+        <button type="button" class="picker-meal-item" onclick="selectMeal('<%= m._id %>')">
+          <div class="picker-meal-img" style="<%= vis.backgroundStyle %>">
+            <img src="<%= vis.imageUrl %>" alt="<%= m.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="picker-meal-body">
+            <div class="picker-meal-name-row">
+              <strong class="picker-meal-name"><%= m.meal_name %></strong>
+              <span class="picker-slot-badge"><%= m.mealType %></span>
+            </div>
+            <div class="picker-meal-meta">
+              <span class="pill pill-condition" style="font-size:0.7rem;padding:2px 7px"><%= m.disease_type %></span>
+              <span><%= m.calories || 0 %> kcal</span>
+              <span><%= m.protein || 0 %>g protein</span>
+            </div>
+          </div>
+          <span class="picker-meal-price"><%= formatCurrency(m.price) %></span>
+        </button>
+      <% }) %>
+      <% if (!pickerMeals.length) { %>
+        <p class="picker-empty">No meals found for this slot and profile. Try searching.</p>
+      <% } %>
+    </div>
+
+    <div class="planner-modal-footer">
+      <button type="button" class="button button-ghost" onclick="closePicker()">Cancel</button>
+    </div>
+
+    <form method="POST" action="/planner/set" id="pickerForm" style="display:none">
+      <input type="hidden" name="day"        id="pickerDay">
+      <input type="hidden" name="slot"       id="pickerSlot">
+      <input type="hidden" name="mealId"     id="pickerMealId">
+      <input type="hidden" name="weekOffset" id="pickerWeekOffset">
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+  let currentDay = '', currentSlot = '', currentWeekOffset = <%= weekOffset %>;
+  let searchTimeout = null;
+
+  function openPicker(day, slot, weekOffset) {
+    currentDay  = day;
+    currentSlot = slot;
+    currentWeekOffset = weekOffset;
+    const labels    = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner' };
+    const dayFull   = { monday:'Monday', tuesday:'Tuesday', wednesday:'Wednesday',
+                        thursday:'Thursday', friday:'Friday', saturday:'Saturday', sunday:'Sunday' };
+    document.getElementById('pickerTitle').textContent    = labels[slot] + ' — pick a meal';
+    document.getElementById('pickerSubtitle').textContent = dayFull[day];
+    document.getElementById('pickerSearch').value = '';
+    document.getElementById('pickerOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    doSearch('', slot);
+    setTimeout(() => document.getElementById('pickerSearch').focus(), 80);
+  }
+
+  function closePicker() {
+    document.getElementById('pickerOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function selectMeal(mealId) {
+    document.getElementById('pickerDay').value        = currentDay;
+    document.getElementById('pickerSlot').value       = currentSlot;
+    document.getElementById('pickerMealId').value     = mealId;
+    document.getElementById('pickerWeekOffset').value = currentWeekOffset;
+    document.getElementById('pickerForm').submit();
+  }
+
+  function debounceSearch(val) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => doSearch(val, currentSlot), 300);
+  }
+
+  async function doSearch(val, slot) {
+    const url = `/planner?week=${currentWeekOffset}&search=${encodeURIComponent(val)}&pickerSlot=${slot || ''}`;
+    try {
+      const html = await fetch(url).then(r => r.text());
+      const doc  = new DOMParser().parseFromString(html, 'text/html');
+      const ng   = doc.getElementById('pickerGrid');
+      if (ng) document.getElementById('pickerGrid').innerHTML = ng.innerHTML;
+    } catch(e) { console.error(e); }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePicker(); });
+
+  async function addDayToCart(btn, day, weekOffset) {
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = 'Adding…';
+    try {
+      const res = await fetch('/planner/add-day-to-cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ day, weekOffset })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        btn.textContent = 'Added!';
+        // Update cart count badge in nav if present
+        const badge = document.querySelector('.cart-badge');
+        if (badge && data.cartCount != null) badge.textContent = data.cartCount;
+        setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+      } else {
+        btn.textContent = data.message || 'Nothing to add';
+        setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+      }
+    } catch(e) {
+      btn.textContent = orig;
+      btn.disabled = false;
+      console.error(e);
+    }
+  }
+</script>

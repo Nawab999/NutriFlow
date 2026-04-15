@@ -1,0 +1,56 @@
+<header class="topbar">
+  <a href="/" class="brand">
+    <span class="brand-mark">N</span>
+    <span>
+      <strong>NutriFlow</strong>
+      <small>Meal planning</small>
+    </span>
+  </a>
+
+  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
+    onclick="this.setAttribute('aria-expanded',this.getAttribute('aria-expanded')==='true'?'false':'true');document.getElementById('main-nav').classList.toggle('open')">
+    &#9776; Menu
+  </button>
+
+  <nav id="main-nav" class="nav-links">
+    <a href="/meals" class="<%= currentPath.startsWith('/meals') && !currentPath.startsWith('/meals/') ? 'active' : '' %>">Browse Meals</a>
+    <% if (currentUser) { %>
+      <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+      <a href="/planner" class="<%= currentPath === '/planner' ? 'active' : '' %>">Planner</a>
+      <a href="/grocery-list" class="<%= currentPath === '/grocery-list' ? 'active' : '' %>">Grocery List</a>
+      <a href="/prescription" class="<%= currentPath === '/prescription' ? 'active' : '' %>" style="position:relative">
+        Prescription
+        <% if (currentUser.profile?.prescription?.uploadedAt) { %>
+          <span class="nav-rx-dot"></span>
+        <% } %>
+      </a>
+      <a href="/profile" class="<%= currentPath === '/profile' ? 'active' : '' %>">Profile</a>
+      <% const isCookMode = currentUser.profile?.cookMode; %>
+      <button class="mode-toggle-btn <%= isCookMode ? 'mode-cook' : 'mode-order' %>"
+        id="modeToggleBtn"
+        onclick="toggleCookMode(this)"
+        title="<%= isCookMode ? 'Switch to Order Mode' : 'Switch to Cook Mode' %>">
+        <% if (isCookMode) { %>
+          <!-- chef hat icon -->
+          <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+        <% } else { %>
+          <!-- shopping bag icon -->
+          <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <% } %>
+        <span class="mode-label"><%= isCookMode ? 'Cook Mode' : 'Order Mode' %></span>
+      </button>
+      <a href="/cart" class="nav-cart <%= currentPath === '/cart' ? 'active' : '' %>">
+        Cart<% if (cartCount > 0) { %><span class="cart-badge"><%= cartCount %></span><% } %>
+      </a>
+      <% if (currentUser.role === 'admin') { %>
+        <a href="/admin/meals" class="<%= currentPath.startsWith('/admin') ? 'active' : '' %>">Admin</a>
+      <% } %>
+      <form method="POST" action="/logout" class="inline-form">
+        <button type="submit" class="button button-ghost button-small">Logout</button>
+      </form>
+    <% } else { %>
+      <a href="/login" class="<%= currentPath === '/login' ? 'active' : '' %>">Login</a>
+      <a href="/register" class="button button-small">Register</a>
+    <% } %>
+  </nav>
+</header>

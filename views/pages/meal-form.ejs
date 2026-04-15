@@ -1,0 +1,61 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section class="section-card narrow-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Admin Meal Form</p>
+      <h1><%= meal ? 'Edit Meal' : 'Create Meal' %></h1>
+    </div>
+  </div>
+
+  <form method="POST" action="<%= meal ? `/admin/meals/${meal._id}` : '/admin/meals' %>" class="form-grid two-column">
+    <label><span>Meal Name</span><input type="text" name="meal_name" value="<%= meal?.meal_name || '' %>" required></label>
+    <label><span>Price</span><input type="number" step="0.01" min="0" name="price" value="<%= meal?.price || '' %>" required></label>
+    <label>
+      <span>Disease Type</span>
+      <select name="disease_type">
+        <% ['Diabetes', 'Hypertension', 'Heart Disease', 'None', 'Other'].forEach(option => { %>
+          <option value="<%= option %>" <%= isSelected(meal?.disease_type || 'None', option) %>><%= option %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>
+      <span>Sugar Level</span>
+      <select name="sugar_level">
+        <% ['Low', 'Medium', 'High'].forEach(option => { %>
+          <option value="<%= option %>" <%= isSelected(meal?.sugar_level || 'Medium', option) %>><%= option %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>
+      <span>Salt Level</span>
+      <select name="salt_level">
+        <% ['Low', 'Medium', 'High'].forEach(option => { %>
+          <option value="<%= option %>" <%= isSelected(meal?.salt_level || 'Medium', option) %>><%= option %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>
+      <span>Temperature</span>
+      <select name="temperature">
+        <% ['Cold', 'Warm', 'Hot'].forEach(option => { %>
+          <option value="<%= option %>" <%= isSelected(meal?.temperature || 'Warm', option) %>><%= option %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label><span>Expiry Days</span><input type="number" min="0" name="expiry_days" value="<%= meal?.expiry_days || '' %>"></label>
+    <label><span>Calories</span><input type="number" min="0" name="calories" value="<%= meal?.calories || '' %>"></label>
+    <label><span>Protein</span><input type="number" min="0" name="protein" value="<%= meal?.protein || '' %>"></label>
+    <label class="full-span"><span>Image URL</span><input type="url" name="imageUrl" value="<%= meal?.imageUrl || '' %>" placeholder="https://example.com/meal.jpg"></label>
+    <label class="full-span"><span>Description</span><textarea name="description"><%= meal?.description || '' %></textarea></label>
+    <div class="button-row">
+      <button type="submit" class="button"><%= meal ? 'Update Meal' : 'Create Meal' %></button>
+      <a href="/admin/meals" class="button button-ghost">Cancel</a>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>

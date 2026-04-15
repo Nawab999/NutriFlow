@@ -1,0 +1,280 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<%
+  const calorieGoal = userProfile?.dailyCalorieGoal || 2000;
+  const bTarget = Math.round(calorieGoal * 0.25);
+  const lTarget = Math.round(calorieGoal * 0.40);
+  const dTarget = Math.round(calorieGoal * 0.35);
+  const hasSuggestions = currentUser && (dailySuggestions.breakfast.length || dailySuggestions.lunch.length || dailySuggestions.dinner.length);
+%>
+
+<!-- Page Header -->
+<section class="meals-hero">
+  <div class="meals-hero-text">
+    <p class="eyebrow">Catalogue</p>
+    <h1>Build Your Perfect<br>Meal Plan</h1>
+    <p class="lead">
+      <% if (currentUser && userProfile?.primaryCondition) { %>
+        Meals ranked for <strong><%= userProfile.primaryCondition %></strong>
+        <% if (userProfile?.fitnessGoal) { %> · <strong><%= userProfile.fitnessGoal %></strong><% } %>
+        <% if (userProfile?.wellnessGoal) { %> · <strong><%= userProfile.wellnessGoal %></strong><% } %>
+      <% } else if (currentUser) { %>
+        <a href="/profile" style="color:var(--brand);font-weight:700">Complete your profile</a> to get personalised meal rankings.
+      <% } else { %>
+        Browse 586+ meals. <a href="/register" style="color:var(--brand);font-weight:700">Create an account</a> for personalised suggestions.
+      <% } %>
+    </p>
+    <% if (userProfile?.allergies?.length && userProfile.allergies[0] !== 'None') { %>
+      <p style="margin-top:8px;font-size:12px;color:#c0392b;font-weight:600">
+        Hiding meals with: <%= userProfile.allergies.filter(a=>a!=='None').join(', ') %> (allergy filter active)
+      </p>
+    <% } %>
+  </div>
+  <% if (currentUser) { %>
+  <div class="meals-hero-targets">
+    <div class="target-pill"><strong><%= bTarget %> kcal</strong><small>Breakfast</small></div>
+    <div class="target-pill"><strong><%= lTarget %> kcal</strong><small>Lunch</small></div>
+    <div class="target-pill"><strong><%= dTarget %> kcal</strong><small>Dinner</small></div>
+    <div class="target-pill target-total"><strong><%= calorieGoal %></strong><small>Daily goal</small></div>
+  </div>
+  <% } %>
+</section>
+
+<!-- Daily Suggestions Banner -->
+<% if (hasSuggestions) { %>
+<section class="section-card suggestions-banner">
+  <div class="section-header" style="margin-bottom:16px">
+    <div>
+      <p class="eyebrow">Tailored for you</p>
+      <h2>Today's Recommended Plan</h2>
+    </div>
+    <a href="/planner" class="button button-ghost button-small">Open planner &rarr;</a>
+  </div>
+  <div class="suggestion-columns">
+    <% [
+      { key:'breakfast', label:'Breakfast', target: bTarget },
+      { key:'lunch',     label:'Lunch',     target: lTarget },
+      { key:'dinner',    label:'Dinner',    target: dTarget }
+    ].forEach(({key, label, target}) => {
+      const items = dailySuggestions[key];
+      if (!items.length) return;
+    %>
+    <div class="suggestion-col">
+      <div class="suggestion-col-header">
+        <div>
+          <strong><%= label %></strong>
+          <span>~<%= target %> kcal target</span>
+        </div>
+      </div>
+      <div class="suggestion-list">
+        <% items.slice(0,3).forEach(m => {
+          const vis = getMealVisual(m);
+          const alreadyFaved = favoritedIds.includes(m._id.toString());
+        %>
+          <div class="suggestion-item">
+            <a href="/meals/<%= m._id %>" class="suggestion-img" style="<%= vis.backgroundStyle %>">
+              <img src="<%= vis.imageUrl %>" alt="<%= m.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+            </a>
+            <div class="suggestion-info">
+              <a href="/meals/<%= m._id %>" class="suggestion-name"><%= m.meal_name %></a>
+              <div class="suggestion-meta">
+                <span><%= m.calories || 0 %> kcal</span>
+                <span><%= m.protein || 0 %>g protein</span>
+                <strong><%= formatCurrency(m.price) %></strong>
+              </div>
+            </div>
+            <div class="suggestion-actions">
+              <form method="POST" action="/cart/add" class="inline-form">
+                <input type="hidden" name="mealId" value="<%= m._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="redirectTo" value="/meals?message=Added+to+cart&type=success">
+                <button type="submit" class="button button-small">+ Cart</button>
+              </form>
+              <button class="btn-fav-sm <%= alreadyFaved ? 'active' : '' %>"
+                data-meal-id="<%= m._id %>"
+                data-favorited="<%= alreadyFaved ? 'true' : 'false' %>"
+                onclick="toggleFavorite(this)"
+                title="Save"><%= alreadyFaved ? '♥' : '♡' %></button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</section>
+<% } %>
+
+<!-- Catalogue section -->
+<div class="meals-catalogue" id="meal-results">
+
+  <!-- Meal type tabs (only filter) -->
+  <div class="meals-type-bar">
+    <div class="meals-type-tabs">
+      <% [
+        { value:'All',       label:'All Meals' },
+        { value:'Breakfast', label:'Breakfast' },
+        { value:'Lunch',     label:'Lunch' },
+        { value:'Dinner',    label:'Dinner' }
+      ].forEach(tab => { %>
+        <button
+          class="meals-tab-btn <%= mealType === tab.value ? 'active' : '' %>"
+          onclick="filterByType('<%= tab.value %>')"
+        ><%= tab.label %></button>
+      <% }) %>
+    </div>
+    <div class="meals-results-info">
+      <span><strong id="results-count"><%= pagination.total %></strong> meal<%= pagination.total !== 1 ? 's' : '' %></span>
+      <% if (currentUser && userProfile?.fitnessGoal) { %>
+        <span class="muted-label">· ranked for <strong><%= userProfile.fitnessGoal %></strong></span>
+      <% } %>
+      <% if (!currentUser) { %>
+        <a href="/login" class="button button-ghost button-small" style="margin-left:12px">Log in for personalised results</a>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Results grid -->
+  <div id="meals-grid-wrap">
+    <% if (!meals.length) { %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        </div>
+        <p>No meals found<% if (mealType !== 'All') { %> for <%= mealType %><% } %>.</p>
+        <button onclick="filterByType('All')" class="button button-ghost">Show all meals</button>
+      </div>
+    <% } else { %>
+    <div class="card-grid">
+      <% meals.forEach(meal => { %>
+        <% const mealVisual = getMealVisual(meal); %>
+        <% const hasRxConflict = prescriptionConflictIds && prescriptionConflictIds.includes(meal._id.toString()); %>
+        <article class="meal-card <%= hasRxConflict ? 'meal-card-rx-conflict' : '' %>">
+          <a href="/meals/<%= meal._id %>" class="meal-card-image-link">
+            <div class="meal-card-image" style="<%= mealVisual.backgroundStyle %>">
+              <img src="<%= mealVisual.imageUrl %>" alt="<%= meal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          </a>
+          <!-- Always show meal type badge -->
+          <span class="meal-type-badge meal-type-<%= (meal.mealType || 'Any').toLowerCase() %>">
+            <%= meal.mealType || 'Any' %>
+          </span>
+          <% if (hasRxConflict) { %>
+            <span class="meal-rx-badge" title="Conflicts with your prescription">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Rx conflict
+            </span>
+          <% } %>
+          <div class="meal-card-body">
+            <div class="pill-row">
+              <span class="pill pill-condition"><%= meal.disease_type %></span>
+              <span class="pill pill-meta"><%= meal.sugar_level %> sugar</span>
+            </div>
+            <h3><a href="/meals/<%= meal._id %>"><%= meal.meal_name %></a></h3>
+            <% if (meal.description) { %>
+              <p class="meal-desc"><%= meal.description.length > 80 ? meal.description.slice(0,80)+'…' : meal.description %></p>
+            <% } %>
+            <div class="meal-nutrition-row">
+              <span><%= meal.calories||0 %> kcal</span>
+              <span><%= meal.protein||0 %>g protein</span>
+            </div>
+            <div class="card-meta">
+              <strong class="price-tag"><%= formatCurrency(meal.price) %></strong>
+            </div>
+            <% if (currentUser) { %>
+            <% const alreadyFaved = favoritedIds.includes(meal._id.toString()); %>
+            <div class="card-actions">
+              <% if (cookMode) { %>
+                <a href="/meals/<%= meal._id %>" class="button button-small">View Recipe</a>
+                <% const alreadyInGrocery = groceryMealIds && groceryMealIds.includes(meal._id.toString()); %>
+                <form method="POST" action="/grocery-list/add" class="inline-form">
+                  <input type="hidden" name="mealId" value="<%= meal._id %>">
+                  <input type="hidden" name="redirectTo" value="/meals?mealType=<%= mealType %>">
+                  <button type="submit" class="button button-ghost button-small<%= alreadyInGrocery ? ' btn-grocery-active' : '' %>" title="<%= alreadyInGrocery ? 'Already in grocery list' : 'Add ingredients to grocery list' %>"><%= alreadyInGrocery ? 'In Grocery' : '+ Grocery' %></button>
+                </form>
+              <% } else { %>
+                <form method="POST" action="/cart/add" class="inline-form">
+                  <input type="hidden" name="mealId" value="<%= meal._id %>">
+                  <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="redirectTo" value="/meals?mealType=<%= mealType %>&message=Added+to+cart&type=success#meal-results">
+                  <button type="submit" class="button button-small">Add to cart</button>
+                </form>
+              <% } %>
+              <button class="button button-ghost button-small btn-fav<%= alreadyFaved?' btn-fav-active':'' %>"
+                data-meal-id="<%= meal._id %>"
+                data-favorited="<%= alreadyFaved?'true':'false' %>"
+                onclick="toggleFavorite(this)"
+                title="<%= alreadyFaved?'Remove from favourites':'Save to favourites' %>"
+              ><%= alreadyFaved ? '♥' : '♡' %></button>
+              <% if (currentUser.role === 'admin') { %>
+                <a href="/admin/meals/<%= meal._id %>/edit" class="text-link text-small">Edit</a>
+              <% } %>
+            </div>
+            <% } else { %>
+            <div class="card-actions">
+              <a href="/login?message=Log+in+to+order&type=info" class="button button-ghost button-small">Log in to order</a>
+            </div>
+            <% } %>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <% if (pagination.page > 1) { %>
+        <a href="/meals?mealType=<%= mealType %>&page=<%= pagination.page-1 %>#meal-results" class="btn-page">&larr;</a>
+      <% } %>
+      <% const ps=Math.max(1,pagination.page-2), pe=Math.min(pagination.pages,pagination.page+2); %>
+      <% for(let p=ps;p<=pe;p++) { %>
+        <% if(p===pagination.page) { %>
+          <span class="btn-page btn-page-active"><%= p %></span>
+        <% } else { %>
+          <a href="/meals?mealType=<%= mealType %>&page=<%= p %>#meal-results" class="btn-page"><%= p %></a>
+        <% } %>
+      <% } %>
+      <% if (pagination.page < pagination.pages) { %>
+        <a href="/meals?mealType=<%= mealType %>&page=<%= pagination.page+1 %>#meal-results" class="btn-page">&rarr;</a>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+// Switch meal type tab — updates grid via AJAX, no page jump, no scroll
+function filterByType(type) {
+  // Update active tab immediately
+  document.querySelectorAll('.meals-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + type + "'"));
+  });
+
+  // Show loading state
+  const wrap = document.getElementById('meals-grid-wrap');
+  wrap.style.opacity = '0.4';
+
+  fetch('/meals?mealType=' + encodeURIComponent(type), {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.text())
+  .then(html => {
+    const doc    = new DOMParser().parseFromString(html, 'text/html');
+    const newWrap = doc.getElementById('meals-grid-wrap');
+    const newCount = doc.getElementById('results-count');
+    if (newWrap) wrap.innerHTML = newWrap.innerHTML;
+    if (newCount) document.getElementById('results-count').textContent = newCount.textContent;
+    wrap.style.opacity = '1';
+    // Update URL without scrolling
+    history.replaceState(null, '', '/meals?mealType=' + encodeURIComponent(type) + '#meal-results');
+  })
+  .catch(() => {
+    // Fallback to normal navigation if fetch fails
+    window.location.href = '/meals?mealType=' + encodeURIComponent(type) + '#meal-results';
+  });
+}
+</script>

@@ -1,0 +1,234 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<%
+  const hasPrescription = prescription.rawText || prescription.uploadedAt;
+  const restrictions = prescription.extractedRestrictions || [];
+  const medications  = prescription.medications || [];
+  const DAY_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+%>
+
+<div class="rx-shell">
+
+  <!-- Page header -->
+  <div class="section-card rx-header">
+    <div>
+      <p class="eyebrow">Medical</p>
+      <h1>Doctor's Prescription</h1>
+      <p class="text-muted">Paste your prescription or dietary advice. NutriFlow will extract restrictions, flag conflicting meals, and track your weekly compliance.</p>
+    </div>
+    <% if (hasPrescription) { %>
+      <button type="button" class="button button-ghost" onclick="document.getElementById('clearRxModal').style.display='flex'">
+        Clear prescription
+      </button>
+    <% } %>
+  </div>
+
+  <div class="rx-layout">
+
+    <!-- LEFT: Input form -->
+    <section class="section-card rx-input-card">
+      <p class="eyebrow">Step 1</p>
+      <h2>Enter Prescription Text</h2>
+      <p class="text-muted" style="font-size:0.88rem;margin-bottom:16px">
+        Type or paste the text from your prescription, doctor's letter, or dietary advice note. We will automatically extract what you should avoid and any medications listed.
+      </p>
+
+      <form method="POST" action="/prescription" id="rxForm">
+
+        <div class="form-field">
+          <label>Prescription / dietary advice text</label>
+          <textarea name="prescriptionText" rows="8" placeholder="e.g. Patient should avoid high-sodium foods, red meat, and grapefruit. Prescribed: atorvastatin 20mg, lisinopril 10mg. Reduce sugar intake and limit processed carbohydrates…"><%= prescription.rawText || '' %></textarea>
+          <span class="goal-hint">Paste any text — doctor's letter, pharmacy notes, or your own notes from an appointment.</span>
+        </div>
+
+        <div class="form-field">
+          <label>Medications (comma-separated, optional)</label>
+          <input type="text" name="medications"
+            value="<%= medications.join(', ') %>"
+            placeholder="e.g. atorvastatin, warfarin, lisinopril">
+          <span class="goal-hint">List any medications you take. We check these against known food interactions.</span>
+        </div>
+
+        <div class="form-field">
+          <label>Additional foods to avoid (comma-separated, optional)</label>
+          <input type="text" name="manualRestrictions"
+            value="<%= restrictions.join(', ') %>"
+            placeholder="e.g. grapefruit, red meat, alcohol, high sodium">
+          <span class="goal-hint">Add anything not already in the text above.</span>
+        </div>
+
+        <button type="submit" class="button rx-save-btn">Analyse & Save</button>
+      </form>
+    </section>
+
+    <!-- RIGHT: Results -->
+    <div class="rx-results-col">
+
+      <% if (hasPrescription) { %>
+
+      <!-- Extracted restrictions -->
+      <section class="section-card rx-result-card">
+        <p class="eyebrow">Extracted</p>
+        <h2>Dietary Restrictions</h2>
+        <% if (restrictions.length) { %>
+          <div class="rx-tag-list">
+            <% restrictions.forEach(r => { %>
+              <span class="rx-tag rx-tag-avoid"><%= r %></span>
+            <% }) %>
+          </div>
+          <p class="goal-hint" style="margin-top:10px">Meals containing these keywords are flagged with a warning badge.</p>
+        <% } else { %>
+          <p class="text-muted">No dietary restrictions extracted yet. Add text above and save.</p>
+        <% } %>
+      </section>
+
+      <!-- Medications + interactions -->
+      <section class="section-card rx-result-card">
+        <p class="eyebrow">Medications</p>
+        <h2>Drug-Food Interactions</h2>
+        <% if (medications.length) { %>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <% medications.forEach(med => {
+              const rule = drugInteractionRules[med.toLowerCase()];
+            %>
+              <div class="rx-interaction <%= rule ? 'rx-interaction-warn' : '' %>">
+                <div class="rx-interaction-name"><%= med %></div>
+                <% if (rule) { %>
+                  <div class="rx-interaction-foods">
+                    Avoid: <% rule.foods.forEach(f => { %><span class="rx-tag rx-tag-drug"><%= f %></span><% }) %>
+                  </div>
+                  <div class="rx-interaction-reason"><%= rule.reason %></div>
+                <% } else { %>
+                  <div class="rx-interaction-reason text-muted" style="font-size:0.8rem">No known food interactions on file for this medication.</div>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p class="text-muted">No medications listed yet.</p>
+        <% } %>
+
+        <!-- All known interactions info -->
+        <details class="rx-info-details" style="margin-top:16px">
+          <summary style="font-size:0.82rem;color:var(--brand);cursor:pointer;font-weight:600">View all tracked drug-food interactions</summary>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+            <% Object.entries(drugInteractionRules).forEach(([drug, rule]) => { %>
+              <div class="rx-interaction" style="font-size:0.82rem">
+                <strong style="text-transform:capitalize"><%= drug %></strong>
+                <span class="text-muted"> — avoid: <%= rule.foods.join(', ') %></span>
+              </div>
+            <% }) %>
+          </div>
+        </details>
+      </section>
+
+      <% } else { %>
+      <section class="section-card rx-result-card">
+        <div class="empty-state" style="padding:24px 0">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+          </div>
+          <p>No prescription saved yet.</p>
+          <p class="text-muted" style="font-size:0.85rem">Paste your prescription text on the left and click Analyse &amp; Save.</p>
+        </div>
+      </section>
+      <% } %>
+
+    </div><!-- /.rx-results-col -->
+  </div><!-- /.rx-layout -->
+
+  <!-- Compliance report -->
+  <% if (complianceReport) { %>
+  <section class="section-card rx-compliance">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Last 7 days</p>
+        <h2>Medical Diet Compliance</h2>
+      </div>
+      <a href="/dashboard" class="text-link">Full dashboard</a>
+    </div>
+
+    <div class="rx-compliance-summary">
+      <div class="rx-compliance-score">
+        <span class="rx-score-num"><%= complianceReport.compliantDays %></span>
+        <span class="rx-score-denom">/ <%= complianceReport.trackedDays %> tracked</span>
+      </div>
+      <div class="rx-compliance-label">
+        <% const pct = complianceReport.trackedDays > 0
+          ? Math.round((complianceReport.compliantDays / complianceReport.trackedDays) * 100)
+          : 0; %>
+        <strong>
+          <% if (complianceReport.trackedDays === 0) { %>Start tracking meals
+          <% } else if (pct === 100) { %>Excellent compliance
+          <% } else if (pct >= 70) { %>Good compliance
+          <% } else { %>Needs improvement<% } %>
+        </strong>
+        <span class="text-muted" style="font-size:0.85rem">
+          Compliant on <%= complianceReport.compliantDays %> of <%= complianceReport.trackedDays %> logged days (last 7 days).
+          <% if (complianceReport.trackedDays < 4) { %>
+            Log more meals from any meal's detail page for a fuller picture.
+          <% } %>
+        </span>
+      </div>
+      <div class="rx-compliance-bar-wrap">
+        <div class="rx-compliance-bar" style="width:<%= pct %>%" title="<%= pct %>%"></div>
+      </div>
+    </div>
+
+    <div class="rx-day-grid">
+      <% complianceReport.days.forEach(day => {
+        const d = new Date(day.date);
+        const isToday = d.toDateString() === new Date().toDateString();
+      %>
+        <div class="rx-day-cell <%= !day.tracked ? 'rx-day-none' : day.compliant ? 'rx-day-ok' : 'rx-day-fail' %>">
+          <span class="rx-day-label"><%= DAY_SHORT[d.getDay()] %><% if (isToday) { %> <em>today</em><% } %></span>
+          <span class="rx-day-date"><%= d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) %></span>
+          <% if (!day.tracked) { %>
+            <span class="rx-day-status rx-day-status-none" title="No meals logged">—</span>
+          <% } else if (day.compliant) { %>
+            <span class="rx-day-status">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          <% } else { %>
+            <span class="rx-day-status rx-day-status-fail">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <% if (day.violations.length) { %>
+              <span class="rx-day-violation-hint"><%= day.violations[0].item %></span>
+            <% } %>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+  <% } else if (hasPrescription) { %>
+  <section class="section-card">
+    <p class="eyebrow">Compliance</p>
+    <p class="text-muted">Track meals in your history (via any meal detail page) to see compliance data here.</p>
+    <a href="/meals" class="button button-ghost" style="margin-top:10px">Browse Meals</a>
+  </section>
+  <% } %>
+
+</div><!-- /.rx-shell -->
+
+<!-- Clear prescription confirmation modal -->
+<div id="clearRxModal" class="modal-backdrop" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-icon modal-icon-warn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h3 class="modal-title">Clear Prescription?</h3>
+    <p class="modal-body">This will permanently delete your saved prescription text, extracted restrictions, medications, and all compliance history. This cannot be undone.</p>
+    <div class="modal-actions">
+      <button type="button" class="button button-ghost" onclick="document.getElementById('clearRxModal').style.display='none'">Cancel</button>
+      <form method="POST" action="/prescription/clear" style="display:inline">
+        <button type="submit" class="button button-danger">Yes, clear prescription</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>

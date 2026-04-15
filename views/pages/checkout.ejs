@@ -1,0 +1,229 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<div class="checkout-layout">
+
+  <!-- Left: Payment form -->
+  <section class="section-card checkout-form-card">
+    <p class="eyebrow">Secure Checkout</p>
+    <h1>Payment Details</h1>
+
+    <form method="POST" action="/orders" id="checkoutForm" onsubmit="return validateCheckout()">
+
+      <!-- Contact -->
+      <div class="checkout-section">
+        <h3 class="checkout-section-title">Contact</h3>
+        <div class="form-grid-2">
+          <label class="form-field">
+            <span>First name</span>
+            <input type="text" name="firstName" value="<%= checkoutUser.profile?.firstName || '' %>" required placeholder="Jane">
+          </label>
+          <label class="form-field">
+            <span>Last name</span>
+            <input type="text" name="lastName" value="<%= checkoutUser.profile?.lastName || '' %>" required placeholder="Smith">
+          </label>
+        </div>
+        <label class="form-field">
+          <span>Email</span>
+          <input type="email" name="email" value="<%= checkoutUser.email %>" required placeholder="jane@email.com">
+        </label>
+        <label class="form-field">
+          <span>Phone</span>
+          <input type="tel" name="phone" value="<%= checkoutUser.profile?.phone || '' %>" placeholder="+1 555 000 0000">
+        </label>
+      </div>
+
+      <!-- Delivery -->
+      <div class="checkout-section">
+        <h3 class="checkout-section-title">Delivery Address</h3>
+        <label class="form-field">
+          <span>Street address</span>
+          <input type="text" name="street" required placeholder="123 Wellness Ave">
+        </label>
+        <div class="form-grid-2">
+          <label class="form-field">
+            <span>City</span>
+            <input type="text" name="city" required placeholder="New York">
+          </label>
+          <label class="form-field">
+            <span>Postcode</span>
+            <input type="text" name="postcode" required placeholder="10001">
+          </label>
+        </div>
+        <label class="form-field">
+          <span>Country</span>
+          <select name="country">
+            <option value="US">United States</option>
+            <option value="GB">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Payment -->
+      <div class="checkout-section">
+        <h3 class="checkout-section-title">Payment</h3>
+
+        <!-- Card type selector -->
+        <div class="card-type-row">
+          <label class="card-type-option">
+            <input type="radio" name="cardType" value="visa" checked>
+            <span class="card-type-pill">
+              <svg width="38" height="14" viewBox="0 0 38 14" fill="none"><text x="0" y="13" font-family="Arial" font-size="13" font-weight="900" fill="#1a1f71">VISA</text></svg>
+            </span>
+          </label>
+          <label class="card-type-option">
+            <input type="radio" name="cardType" value="mastercard">
+            <span class="card-type-pill">
+              <svg width="36" height="22" viewBox="0 0 36 22"><circle cx="13" cy="11" r="11" fill="#eb001b"/><circle cx="23" cy="11" r="11" fill="#f79e1b" fill-opacity="0.85"/></svg>
+            </span>
+          </label>
+          <label class="card-type-option">
+            <input type="radio" name="cardType" value="amex">
+            <span class="card-type-pill" style="font-weight:700;font-size:0.75rem;color:#007bc1;letter-spacing:0.02em">AMEX</span>
+          </label>
+        </div>
+
+        <label class="form-field">
+          <span>Card number</span>
+          <div class="card-input-wrap">
+            <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric"
+              placeholder="1234 5678 9012 3456" maxlength="19"
+              oninput="formatCard(this)" required autocomplete="cc-number">
+            <span class="card-input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+          </div>
+        </label>
+
+        <label class="form-field">
+          <span>Name on card</span>
+          <input type="text" name="cardName" required placeholder="JANE SMITH" style="text-transform:uppercase" autocomplete="cc-name">
+        </label>
+
+        <div class="form-grid-2">
+          <label class="form-field">
+            <span>Expiry date</span>
+            <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM / YY" maxlength="7"
+              oninput="formatExpiry(this)" required autocomplete="cc-exp">
+          </label>
+          <label class="form-field">
+            <span>CVV</span>
+            <div class="card-input-wrap">
+              <input type="text" id="cardCvv" name="cardCvv" inputmode="numeric"
+                placeholder="•••" maxlength="4" oninput="this.value=this.value.replace(/\D/g,'')" required autocomplete="cc-csc">
+              <span class="card-input-icon" title="3 or 4 digit security code">?</span>
+            </div>
+          </label>
+        </div>
+
+        <label class="checkout-check">
+          <input type="checkbox" name="saveCard">
+          <span>Save card for future orders</span>
+        </label>
+      </div>
+
+      <!-- Delivery note -->
+      <div class="checkout-section">
+        <h3 class="checkout-section-title">Delivery Note <span class="optional-tag">optional</span></h3>
+        <label class="form-field">
+          <textarea name="deliveryNote" rows="2" placeholder="Leave at door, ring bell, etc."></textarea>
+        </label>
+      </div>
+
+      <!-- Submit (mobile — also shown in sidebar on desktop) -->
+      <button type="submit" class="button button-large checkout-submit-mobile">
+        Place Order &middot; <%= formatCurrency(cart.totalPrice) %>
+      </button>
+
+    </form>
+  </section>
+
+  <!-- Right: Order summary -->
+  <aside class="checkout-summary">
+    <div class="section-card">
+      <p class="eyebrow">Summary</p>
+      <h2>Your Order</h2>
+
+      <div class="checkout-items">
+        <% cart.items.forEach(item => { %>
+          <% const vis = getMealVisual(item.meal); %>
+          <div class="checkout-item">
+            <div class="checkout-item-img" style="<%= vis.backgroundStyle %>">
+              <img src="<%= vis.imageUrl %>" alt="<%= item.meal?.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+              <span class="checkout-item-qty"><%= item.quantity %></span>
+            </div>
+            <div class="checkout-item-info">
+              <strong><%= item.meal?.meal_name %></strong>
+              <span class="text-muted" style="font-size:0.8rem"><%= item.meal?.calories || 0 %> kcal</span>
+            </div>
+            <span class="checkout-item-price"><%= formatCurrency((item.meal?.price || 0) * item.quantity) %></span>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="checkout-totals">
+        <div class="checkout-total-row">
+          <span>Subtotal</span>
+          <span><%= formatCurrency(cart.totalPrice) %></span>
+        </div>
+        <div class="checkout-total-row">
+          <span>Delivery</span>
+          <span class="text-success">Free</span>
+        </div>
+        <div class="checkout-total-row checkout-grand-total">
+          <strong>Total</strong>
+          <strong><%= formatCurrency(cart.totalPrice) %></strong>
+        </div>
+      </div>
+
+      <button type="submit" form="checkoutForm" class="button button-large" style="width:100%;margin-top:6px">
+        Place Order
+      </button>
+
+      <p class="checkout-secure-note">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Payments are encrypted and secure. Your data is never stored.
+      </p>
+
+      <a href="/cart" class="text-link" style="display:block;text-align:center;margin-top:10px;font-size:0.85rem">← Edit cart</a>
+    </div>
+  </aside>
+
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+function formatCard(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+  input.value = v;
+}
+
+function validateCheckout() {
+  const card = document.getElementById('cardNumber').value.replace(/\s/g,'');
+  if (card.length < 13) { alert('Please enter a valid card number.'); return false; }
+  const cvv = document.getElementById('cardCvv').value;
+  if (cvv.length < 3) { alert('Please enter a valid CVV.'); return false; }
+  const exp = document.getElementById('cardExpiry').value.replace(/\s/g,'');
+  if (exp.length < 4) { alert('Please enter a valid expiry date.'); return false; }
+  return true;
+}
+
+// Highlight active card type pill
+document.querySelectorAll('.card-type-option input').forEach(radio => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.card-type-pill').forEach(p => p.classList.remove('active'));
+    radio.nextElementSibling.classList.add('active');
+  });
+  if (radio.checked) radio.nextElementSibling.classList.add('active');
+});
+</script>

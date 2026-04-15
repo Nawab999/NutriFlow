@@ -1,0 +1,302 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section class="section-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow detail-mode-eyebrow">
+        <% if (cookMode) { %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+          Cook Mode
+        <% } else { %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Order Mode
+        <% } %>
+        &middot; Meal Detail
+      </p>
+      <h1><%= meal.meal_name %></h1>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="/meals" class="button button-ghost">&larr; Back to meals</a>
+      <% if (currentUser) { %>
+        <a href="/planner" class="button button-ghost">Planner</a>
+        <a href="/dashboard" class="button button-ghost">Dashboard</a>
+      <% } %>
+    </div>
+  </div>
+
+  <% const mealVisual = getMealVisual(meal); %>
+  <div class="detail-layout">
+    <div class="detail-image-wrap">
+      <div class="meal-detail-image" style="<%= mealVisual.backgroundStyle %>">
+        <img src="<%= mealVisual.imageUrl %>" alt="<%= meal.meal_name %>" onerror="this.style.display='none'">
+      </div>
+      <% if (cookMode && (meal.cookTime || meal.prepTime || meal.servings)) { %>
+      <div class="cook-meta-bar">
+        <% if (meal.prepTime) { %>
+        <div class="cook-meta-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <strong><%= meal.prepTime %> min</strong><small>Prep</small>
+        </div>
+        <% } %>
+        <% if (meal.cookTime) { %>
+        <div class="cook-meta-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10"/><path d="M12 6v6l4 2"/><path d="M18 2l4 4-4 4"/></svg>
+          <strong><%= meal.cookTime %> min</strong><small>Cook</small>
+        </div>
+        <% } %>
+        <% if (meal.servings) { %>
+        <div class="cook-meta-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+          <strong><%= meal.servings %></strong><small>Serving<%= meal.servings !== 1 ? 's' : '' %></small>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="detail-content">
+      <div class="pill-row">
+        <span class="pill pill-condition"><%= meal.disease_type %></span>
+        <span class="pill pill-meta"><%= meal.sugar_level %> sugar</span>
+        <span class="pill pill-meta"><%= meal.salt_level %> salt</span>
+        <span class="pill pill-meta"><%= meal.temperature %></span>
+        <% if (meal.mealType && meal.mealType !== 'Any') { %>
+          <span class="pill pill-meta"><%= meal.mealType %></span>
+        <% } %>
+      </div>
+
+      <% if (prescriptionConflicts && prescriptionConflicts.length) { %>
+        <div class="rx-conflict-banner">
+          <div class="rx-conflict-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="rx-conflict-body">
+            <strong>Prescription conflict detected</strong>
+            <% prescriptionConflicts.forEach(c => { %>
+              <p><%= c.reason %></p>
+            <% }) %>
+            <a href="/prescription" class="rx-conflict-link">View prescription</a>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (meal.description) { %>
+        <p class="lead detail-desc"><%= meal.description %></p>
+      <% } %>
+
+      <div class="nutrition-grid">
+        <div class="nutrition-box">
+          <small>Calories</small>
+          <strong><%= meal.calories || 0 %></strong>
+        </div>
+        <div class="nutrition-box">
+          <small>Protein</small>
+          <strong><%= meal.protein || 0 %>g</strong>
+        </div>
+        <div class="nutrition-box">
+          <small>Best before</small>
+          <strong><%= meal.expiry_days || 0 %> day<%= meal.expiry_days !== 1 ? 's' : '' %></strong>
+        </div>
+        <% if (!cookMode) { %>
+        <div class="nutrition-box">
+          <small>Price</small>
+          <strong><%= formatCurrency(meal.price) %></strong>
+        </div>
+        <% } %>
+      </div>
+
+      <% if (currentUser) { %>
+        <% if (cookMode) { %>
+        <!-- Cook Mode actions -->
+        <div class="detail-actions">
+          <a href="/grocery-list" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1" ry="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+            Grocery List
+          </a>
+          <button
+            class="button button-ghost btn-fav<%= isFavorited ? ' btn-fav-active' : '' %>"
+            data-meal-id="<%= meal._id %>"
+            data-favorited="<%= isFavorited ? 'true' : 'false' %>"
+            onclick="toggleFavorite(this)"
+          ><%= isFavorited ? '♥ Saved' : '♡ Save' %></button>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/admin/meals/<%= meal._id %>/edit" class="button button-ghost">Edit</a>
+          <% } %>
+        </div>
+        <% } else { %>
+        <!-- Order Mode actions -->
+        <div class="detail-actions">
+          <form method="POST" action="/cart/add" class="add-to-cart-form">
+            <input type="hidden" name="mealId" value="<%= meal._id %>">
+            <input type="hidden" name="redirectTo" value="/meals/<%= meal._id %>?message=Added+to+cart&type=success">
+            <div class="qty-selector">
+              <button type="button" class="qty-btn" onclick="const i=this.nextElementSibling;i.value=Math.max(1,+i.value-1)">−</button>
+              <input type="number" name="quantity" value="1" min="1" max="99" class="qty-input">
+              <button type="button" class="qty-btn" onclick="const i=this.previousElementSibling;i.value=Math.min(99,+i.value+1)">+</button>
+            </div>
+            <button type="submit" class="button">Add to cart</button>
+          </form>
+          <button
+            class="button button-ghost btn-fav<%= isFavorited ? ' btn-fav-active' : '' %>"
+            data-meal-id="<%= meal._id %>"
+            data-favorited="<%= isFavorited ? 'true' : 'false' %>"
+            onclick="toggleFavorite(this)"
+          ><%= isFavorited ? '♥ Saved' : '♡ Save' %></button>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/admin/meals/<%= meal._id %>/edit" class="button button-ghost">Edit</a>
+          <% } %>
+        </div>
+        <% } %>
+
+        <div class="track-meal-card">
+          <p class="track-meal-title">Log this meal</p>
+          <form method="POST" action="/history" class="history-form">
+            <input type="hidden" name="mealId" value="<%= meal._id %>">
+            <input type="hidden" name="redirectTo" value="/meals/<%= meal._id %>?message=Meal+logged+to+history&type=success">
+            <div class="track-row">
+              <label class="track-label"><span>Rating</span>
+                <select name="rating" class="track-select">
+                  <option value="5">★★★★★ Excellent</option>
+                  <option value="4">★★★★☆ Good</option>
+                  <option value="3">★★★☆☆ Okay</option>
+                  <option value="2">★★☆☆☆ Poor</option>
+                  <option value="1">★☆☆☆☆ Bad</option>
+                </select>
+              </label>
+              <label class="track-label"><span>Notes</span>
+                <input type="text" name="notes" placeholder="Optional notes…" class="track-input">
+              </label>
+              <button type="submit" class="button button-primary">Log meal</button>
+            </div>
+          </form>
+        </div>
+      <% } else { %>
+        <div class="top-gap">
+          <a href="/login?message=Log+in+to+order+meals&type=info" class="button">Login to order</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- Cook Mode: Ingredients + Instructions -->
+<% if (cookMode) { %>
+<div class="recipe-layout">
+
+  <% if (meal.ingredients && meal.ingredients.length) { %>
+  <section class="section-card recipe-section">
+    <p class="eyebrow">What you need</p>
+    <h2>Ingredients</h2>
+    <ul class="ingredient-list">
+      <% meal.ingredients.forEach((ing, i) => { %>
+        <li class="ingredient-item">
+          <label class="ingredient-check-label">
+            <input type="checkbox" class="ingredient-cb" id="ing-<%= i %>">
+            <span class="ingredient-checkmark"></span>
+            <span class="ingredient-text"><%= ing %></span>
+          </label>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+  <% } else { %>
+  <section class="section-card recipe-section recipe-empty">
+    <p class="eyebrow">What you need</p>
+    <h2>Ingredients</h2>
+    <p class="text-muted">No ingredients listed for this meal yet.</p>
+  </section>
+  <% } %>
+
+  <% if (meal.instructions && meal.instructions.length) { %>
+  <section class="section-card recipe-section">
+    <p class="eyebrow">How to make it</p>
+    <h2>Instructions</h2>
+    <ol class="instruction-list">
+      <% meal.instructions.forEach((step, i) => { %>
+        <li class="instruction-step" id="step-<%= i %>">
+          <div class="step-number"><%= i + 1 %></div>
+          <div class="step-body">
+            <p><%= step %></p>
+            <button type="button" class="step-done-btn" onclick="markStepDone(this, <%= i %>)">Mark done</button>
+          </div>
+        </li>
+      <% }) %>
+    </ol>
+  </section>
+  <% } else { %>
+  <section class="section-card recipe-section recipe-empty">
+    <p class="eyebrow">How to make it</p>
+    <h2>Instructions</h2>
+    <p class="text-muted">No instructions listed for this meal yet.</p>
+  </section>
+  <% } %>
+
+</div>
+<% } %>
+
+<% if (relatedMeals.length) { %>
+<section class="section-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">More like this</p>
+      <h2>Related Meals</h2>
+    </div>
+    <a href="/meals?disease_type=<%= meal.disease_type %>" class="text-link">View all &rarr;</a>
+  </div>
+  <div class="card-grid">
+    <% relatedMeals.forEach(relatedMeal => { %>
+      <% const relatedMealVisual = getMealVisual(relatedMeal); %>
+      <article class="meal-card">
+        <a href="/meals/<%= relatedMeal._id %>" class="meal-card-image-link">
+          <div class="meal-card-image" style="<%= relatedMealVisual.backgroundStyle %>">
+            <img src="<%= relatedMealVisual.imageUrl %>" alt="<%= relatedMeal.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+          </div>
+        </a>
+        <div class="meal-card-body">
+          <div class="pill-row">
+            <span class="pill pill-condition"><%= relatedMeal.disease_type %></span>
+          </div>
+          <h3><a href="/meals/<%= relatedMeal._id %>"><%= relatedMeal.meal_name %></a></h3>
+          <div class="card-meta">
+            <% if (!cookMode) { %><strong class="price-tag"><%= formatCurrency(relatedMeal.price) %></strong><% } %>
+            <span class="cal-tag"><%= relatedMeal.calories || 0 %> kcal</span>
+          </div>
+          <% if (currentUser && !cookMode) { %>
+          <div class="card-actions">
+            <form method="POST" action="/cart/add" class="inline-form">
+              <input type="hidden" name="mealId" value="<%= relatedMeal._id %>">
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="redirectTo" value="/meals/<%= meal._id %>?message=Added+to+cart&type=success">
+              <button type="submit" class="button button-small">Add to cart</button>
+            </form>
+          </div>
+          <% } else if (currentUser && cookMode) { %>
+          <div class="card-actions">
+            <a href="/meals/<%= relatedMeal._id %>" class="button button-small button-ghost">View Recipe</a>
+          </div>
+          <% } %>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<% } %>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+  function markStepDone(btn, idx) {
+    const step = document.getElementById('step-' + idx);
+    step.classList.toggle('step-completed');
+    btn.textContent = step.classList.contains('step-completed') ? 'Undo' : 'Mark done';
+  }
+  // Ingredient checkboxes — strike through when checked
+  document.querySelectorAll('.ingredient-cb').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.ingredient-item').classList.toggle('ingredient-done', cb.checked);
+    });
+  });
+</script>

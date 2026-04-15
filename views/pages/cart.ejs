@@ -1,0 +1,67 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section class="section-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Order Summary</p>
+      <h1>Your Cart</h1>
+    </div>
+    <a href="/meals" class="button button-ghost">Continue shopping</a>
+  </div>
+
+  <% if (cart && cart.items && cart.items.length) { %>
+    <div class="cart-list">
+      <% cart.items.forEach(item => { %>
+        <% const mealVisual = getMealVisual(item.meal); %>
+        <article class="cart-item">
+          <a href="/meals/<%= item.meal?._id %>" class="cart-item-image">
+            <div class="cart-thumb" style="<%= mealVisual.backgroundStyle %>">
+              <img src="<%= mealVisual.imageUrl %>" alt="<%= item.meal?.meal_name %>" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          </a>
+          <div class="cart-item-info">
+            <h3><a href="/meals/<%= item.meal?._id %>"><%= item.meal?.meal_name || 'Meal' %></a></h3>
+            <div class="pill-row">
+              <span class="pill pill-condition"><%= item.meal?.disease_type %></span>
+              <span class="pill pill-meta"><%= item.meal?.calories || 0 %> cal</span>
+              <span class="pill pill-meta"><%= item.meal?.protein || 0 %>g protein</span>
+            </div>
+            <p class="unit-price">Unit price: <%= formatCurrency(item.meal?.price || 0) %></p>
+          </div>
+          <div class="cart-item-actions">
+            <form method="POST" action="/cart/<%= item.meal?._id %>/update" class="qty-form">
+              <button type="submit" name="quantity" value="<%= Math.max(1, item.quantity - 1) %>" class="qty-btn">−</button>
+              <span class="qty-display"><%= item.quantity %></span>
+              <button type="submit" name="quantity" value="<%= item.quantity + 1 %>" class="qty-btn">+</button>
+            </form>
+            <p class="item-total"><%= formatCurrency((item.meal?.price || 0) * item.quantity) %></p>
+            <form method="POST" action="/cart/<%= item.meal?._id %>/remove" class="inline-form">
+              <button type="submit" class="btn-remove">Remove</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Subtotal (<%= cart.items.length %> item<%= cart.items.length !== 1 ? 's' : '' %>)</span>
+        <strong class="cart-total"><%= formatCurrency(cart.totalPrice) %></strong>
+      </div>
+      <a href="/checkout" class="button button-large">Proceed to Checkout</a>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+      <p>Your cart is empty.</p>
+      <a href="/meals" class="button">Browse meals</a>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>

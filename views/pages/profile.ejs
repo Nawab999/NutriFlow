@@ -1,0 +1,250 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<%
+  const firstName = profileUser.profile?.firstName || '';
+  const lastName  = profileUser.profile?.lastName  || '';
+  const fullName  = [firstName, lastName].filter(Boolean).join(' ') || profileUser.username || 'User';
+  const initials  = firstName
+    ? firstName[0].toUpperCase() + (lastName ? lastName[0].toUpperCase() : '')
+    : (profileUser.username || 'U')[0].toUpperCase();
+
+  const savedAllergies = profileUser.profile?.allergies || [];
+  const savedAvoid     = (profileUser.profile?.dietaryRestrictions?.avoidIngredients || []).join(', ');
+  const savedInclude   = (profileUser.profile?.dietaryRestrictions?.includeIngredients || []).join(', ');
+
+  const ALLERGY_OPTIONS = ['Gluten','Dairy','Eggs','Nuts','Shellfish','Soy','Fish','Peanuts'];
+  const FITNESS_GOALS   = [
+    { value: 'Weight Loss',     desc: 'Burn fat, reduce calorie intake' },
+    { value: 'Weight Gain',     desc: 'Increase calorie surplus' },
+    { value: 'Build Muscle',    desc: 'High protein, strength focus' },
+    { value: 'Maintain Weight', desc: 'Balanced calorie maintenance' },
+    { value: 'Medical Diet',    desc: 'Doctor-guided dietary plan' }
+  ];
+%>
+
+<div class="profile-shell">
+
+  <div style="margin-bottom:16px">
+    <a href="/dashboard" class="button button-ghost button-small">&larr; Dashboard</a>
+  </div>
+
+  <!-- Identity card -->
+  <div class="profile-avatar-card">
+    <div class="profile-avatar"><%= initials %></div>
+    <div class="profile-avatar-info">
+      <h2><%= fullName %></h2>
+      <p><%= profileUser.email %></p>
+      <div class="profile-badge-row" style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <% if (profileUser.profile?.fitnessGoal) { %>
+          <span class="pill pill-condition"><%= profileUser.profile.fitnessGoal %></span>
+        <% } %>
+        <% if (profileUser.profile?.primaryCondition) { %>
+          <span class="pill pill-meta"><%= profileUser.profile.primaryCondition %></span>
+        <% } %>
+        <% if (profileUser.profile?.wellnessGoal) { %>
+          <span class="pill pill-meta"><%= profileUser.profile.wellnessGoal %></span>
+        <% } %>
+        <% if (savedAllergies.length && savedAllergies[0] !== 'None') { %>
+          <span class="pill" style="background:#fff0f0;color:#c0392b;font-size:11px;font-weight:700">
+            ! <%= savedAllergies.join(', ') %> allergy
+          </span>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <form method="POST" action="/profile">
+
+    <!-- 1. Personal Information -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Personal Information</div>
+      <div class="profile-form-grid">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" name="firstName" value="<%= profileUser.profile?.firstName || '' %>" placeholder="e.g. Alex">
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" name="lastName" value="<%= profileUser.profile?.lastName || '' %>" placeholder="e.g. Morgan">
+        </div>
+        <div class="form-field">
+          <label>Phone</label>
+          <input type="text" name="phone" value="<%= profileUser.profile?.phone || '' %>" placeholder="e.g. +1 555 000 0000">
+        </div>
+        <div class="form-field full-span">
+          <label>Bio</label>
+          <textarea name="bio" placeholder="A short note about your dietary lifestyle…"><%= profileUser.profile?.bio || '' %></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Fitness Goal -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">My Goal</div>
+      <p class="profile-section-desc">What are you working towards? This shapes every meal recommendation.</p>
+      <div class="goal-card-grid" id="goalCardGrid">
+        <% FITNESS_GOALS.forEach(g => {
+          const isActive = profileUser.profile?.fitnessGoal === g.value;
+        %>
+          <label class="goal-card <%= isActive ? 'goal-card-active' : '' %>" onclick="selectGoalCard(this)">
+            <input type="radio" name="fitnessGoal" value="<%= g.value %>" <%= isActive ? 'checked' : '' %>>
+            <strong class="goal-card-label"><%= g.value %></strong>
+            <span class="goal-card-desc"><%= g.desc %></span>
+          </label>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- 3. Health Profile -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Health Profile</div>
+      <div class="profile-form-grid">
+        <div class="form-field">
+          <label>Medical Condition</label>
+          <select name="primaryCondition">
+            <option value="">None / Not specified</option>
+            <% ['Diabetes', 'Hypertension', 'Heart Disease', 'None', 'Other'].forEach(option => { %>
+              <option value="<%= option %>" <%= isSelected(profileUser.profile?.primaryCondition, option) %>><%= option %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Wellness Goal</label>
+          <select name="wellnessGoal">
+            <option value="">Select goal</option>
+            <% ['Balanced nutrition', 'Weight management', 'Heart health', 'Blood sugar control', 'Lower sodium', 'High protein'].forEach(option => { %>
+              <option value="<%= option %>" <%= isSelected(profileUser.profile?.wellnessGoal, option) %>><%= option %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Doctor Dietary Restrictions -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Doctor's Dietary Recommendations</div>
+      <p class="profile-section-desc">
+        If your doctor told you to avoid or include specific ingredients, list them here.
+        Meals containing avoided items will be hidden from all recommendations.
+      </p>
+      <div class="profile-form-grid">
+        <div class="form-field">
+          <label>Avoid these ingredients</label>
+          <input type="text" name="avoidIngredients"
+            value="<%= savedAvoid %>"
+            placeholder="e.g. sugar, sodium, gluten, red meat">
+          <span class="goal-hint">Comma-separated. These meals will be filtered out.</span>
+        </div>
+        <div class="form-field">
+          <label>Include / prioritise these</label>
+          <input type="text" name="includeIngredients"
+            value="<%= savedInclude %>"
+            placeholder="e.g. fibre, omega-3, potassium, calcium">
+          <span class="goal-hint">Comma-separated. Meals with these get higher recommendation scores.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Food Allergies -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Food Allergies</div>
+      <p class="profile-section-desc">Select all foods you are allergic to. These will be excluded from every recommendation and the planner.</p>
+      <div class="allergy-grid">
+        <% ALLERGY_OPTIONS.forEach(a => {
+          const checked = savedAllergies.includes(a);
+        %>
+          <label class="allergy-chip <%= checked ? 'allergy-chip-active' : '' %>">
+            <input type="checkbox" name="allergies" value="<%= a %>" <%= checked ? 'checked' : '' %> style="display:none"
+              onchange="this.closest('label').classList.toggle('allergy-chip-active', this.checked)">
+            <span class="allergy-chip-icon">
+              <% if (a === 'Gluten')    { %>G<% }
+              else if (a === 'Dairy')   { %>D<% }
+              else if (a === 'Eggs')    { %>E<% }
+              else if (a === 'Nuts')    { %>N<% }
+              else if (a === 'Shellfish'){ %>Sh<% }
+              else if (a === 'Soy')     { %>S<% }
+              else if (a === 'Fish')    { %>F<% }
+              else if (a === 'Peanuts') { %>P<% }
+              else { %>!<% } %>
+            </span>
+            <span><%= a %></span>
+          </label>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- 6. Nutrition Goals -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Nutrition Targets</div>
+      <div class="profile-form-grid">
+        <div class="form-field">
+          <label>Daily Calorie Goal (kcal)</label>
+          <input type="number" name="dailyCalorieGoal" min="500" max="5000"
+            value="<%= profileUser.profile?.dailyCalorieGoal || 2000 %>" placeholder="2000">
+          <span class="goal-hint">Broken down as: Breakfast 25% · Lunch 40% · Dinner 35%</span>
+        </div>
+        <div class="form-field">
+          <label>Daily Protein Goal (g)</label>
+          <input type="number" name="dailyProteinGoal" min="10" max="300"
+            value="<%= profileUser.profile?.dailyProteinGoal || 50 %>" placeholder="50">
+          <span class="goal-hint">Tip: ~0.8g per kg body weight for maintenance; 1.6–2g for muscle growth</span>
+        </div>
+        <div class="form-field">
+          <label>Daily Budget ($)</label>
+          <input type="number" name="dailyBudget" min="0" step="0.01"
+            value="<%= profileUser.profile?.dailyBudget || '' %>" placeholder="e.g. 30">
+          <span class="goal-hint">Used to track weekly spending and filter affordable meals</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Dietary Preferences -->
+    <div class="profile-section-card">
+      <div class="profile-section-title">Taste Preferences</div>
+      <div class="profile-form-grid">
+        <div class="form-field">
+          <label>Preferred Sugar Level</label>
+          <select name="preferredSugarLevel">
+            <option value="">No preference</option>
+            <% ['Low', 'Medium', 'High'].forEach(option => { %>
+              <option value="<%= option %>" <%= isSelected(profileUser.profile?.preferredSugarLevel, option) %>><%= option %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Preferred Temperature</label>
+          <select name="preferredTemperature">
+            <option value="">No preference</option>
+            <% ['Cold', 'Warm', 'Hot'].forEach(option => { %>
+              <option value="<%= option %>" <%= isSelected(profileUser.profile?.preferredTemperature, option) %>><%= option %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="profile-save-btn">Save Profile</button>
+
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+function selectGoalCard(clickedLabel) {
+  // Remove active from all cards
+  document.querySelectorAll('#goalCardGrid .goal-card').forEach(l => l.classList.remove('goal-card-active'));
+  // Mark clicked active
+  clickedLabel.classList.add('goal-card-active');
+  // Check the radio inside it
+  const radio = clickedLabel.querySelector('input[type="radio"]');
+  if (radio) radio.checked = true;
+}
+// Hide radio visually but keep it accessible
+document.querySelectorAll('#goalCardGrid input[type="radio"]').forEach(r => {
+  r.style.cssText = 'position:absolute;opacity:0;width:0;height:0;pointer-events:none';
+});
+</script>

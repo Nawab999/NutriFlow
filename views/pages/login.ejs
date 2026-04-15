@@ -1,0 +1,80 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section class="auth-shell">
+  <div class="auth-card">
+
+    <!-- Left panel: branding -->
+    <div class="auth-side">
+      <div class="auth-side-brand">
+        <div class="auth-side-mark">N</div>
+        <strong>NutriFlow</strong>
+      </div>
+      <h2 class="auth-side-headline">Your health,<br>your meals.</h2>
+      <p class="auth-side-sub">Personalised meal planning around your medical conditions, fitness goals, and taste preferences.</p>
+      <ul class="auth-side-features">
+        <li>
+          <span class="auth-feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Health-first meal recommendations
+        </li>
+        <li>
+          <span class="auth-feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Weekly planner + grocery list
+        </li>
+        <li>
+          <span class="auth-feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Prescription conflict checker
+        </li>
+        <li>
+          <span class="auth-feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Order or cook at home
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right panel: form -->
+    <div class="auth-form-panel">
+      <p class="eyebrow">Welcome back</p>
+      <h1 class="auth-form-title">Sign in</h1>
+      <p class="auth-form-sub">Dashboard, profile, cart and orders require a login.</p>
+
+      <form method="POST" action="/login" class="auth-form">
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <div class="auth-input-wrap">
+            <svg class="auth-input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input id="login-email" type="email" name="email" value="<%= formData.email || '' %>" placeholder="you@email.com" required autocomplete="email">
+          </div>
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <div class="auth-input-wrap">
+            <svg class="auth-input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input id="login-password" type="password" name="password" placeholder="Your password" required autocomplete="current-password">
+            <button type="button" class="auth-pw-toggle" onclick="togglePw('login-password', this)" tabindex="-1" aria-label="Show password">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="button auth-submit-btn">Sign in</button>
+      </form>
+
+      <p class="auth-switch">No account yet? <a href="/register">Create one free</a></p>
+      <p class="auth-switch" style="margin-top:6px"><a href="/meals">Browse meals without signing in &rarr;</a></p>
+    </div>
+
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
+
+<script>
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.style.color = isText ? '' : 'var(--brand)';
+}
+</script>

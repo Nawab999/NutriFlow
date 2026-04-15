@@ -1,0 +1,8 @@
+node_modules/
+.env
+.DS_Store
+npm-debug.log
+*.log
+.claude/
+final-project-the-risers/
+SETUP_AND_DEPLOYMENT.md

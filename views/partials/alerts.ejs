@@ -1,0 +1,14 @@
+<% if (flash) { %>
+  <div class="alert alert-<%= flash.type %>"><%= flash.text %></div>
+<% } %>
+
+<% if (errors && errors.length) { %>
+  <div class="alert alert-error">
+    <strong>Please fix the following:</strong>
+    <ul class="error-list">
+      <% errors.forEach(error => { %>
+        <li><%= error %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>

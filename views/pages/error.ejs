@@ -1,0 +1,15 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section class="section-card narrow-card">
+  <p class="eyebrow">Error</p>
+  <h1>Something went wrong</h1>
+  <p><%= errorMessage || 'An unexpected error occurred.' %></p>
+  <div class="button-row top-gap">
+    <a href="/" class="button">Return home</a>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>

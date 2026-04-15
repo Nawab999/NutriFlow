@@ -1,0 +1,198 @@
+  </div>
+<script>
+  // Auto-dismiss flash alerts after 4 seconds
+  document.querySelectorAll('.alert').forEach(el => {
+    setTimeout(() => {
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 400);
+    }, 4000);
+  });
+
+  // Scroll to #hash anchor after page load (restores position after form submit redirect)
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  // Toggle Cook / Order mode
+  async function toggleCookMode(btn) {
+    btn.disabled = true;
+    const origLabel = btn.querySelector('.mode-label').textContent;
+    btn.querySelector('.mode-label').textContent = '...';
+    try {
+      const res = await fetch('/toggle-cook-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!res.ok) throw new Error('Server error ' + res.status);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      // Reload so the whole page reflects the new mode
+      window.location.reload();
+    } catch(e) {
+      console.error('toggleCookMode error:', e);
+      btn.querySelector('.mode-label').textContent = origLabel;
+      btn.disabled = false;
+    }
+  }
+
+  // ── Nutrition Assistant Chatbox ───────────────────────────────────────────
+  (function () {
+
+    function buildWidget() {
+      // Inject HTML
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = `
+        <div id="nf-chat-fab" title="Ask NutriFlow Assistant" aria-label="Open nutrition assistant">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="nf-chat-badge" id="nfChatBadge" style="display:none">1</span>
+        </div>
+        <div id="nf-chat-window" class="nf-chat-window" role="dialog" aria-label="Nutrition assistant chat" hidden>
+          <div class="nf-chat-header">
+            <div class="nf-chat-header-info">
+              <div class="nf-chat-avatar">N</div>
+              <div>
+                <strong>NutriFlow Assistant</strong>
+                <span class="nf-chat-status">Online · DB-powered</span>
+              </div>
+            </div>
+            <div class="nf-chat-header-actions">
+              <button id="nfChatClear" class="nf-chat-action-btn" title="Clear chat" aria-label="Clear chat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+              <button id="nfChatClose" class="nf-chat-close" aria-label="Close chat">&times;</button>
+            </div>
+          </div>
+          <div id="nfChatMessages" class="nf-chat-messages"></div>
+          <div class="nf-chat-input-row">
+            <input id="nfChatInput" type="text" placeholder="Ask about meals, nutrition, features…" autocomplete="off" maxlength="200">
+            <button id="nfChatSend" aria-label="Send">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <p class="nf-chat-hint">Powered by your meal database · No AI API needed</p>
+        </div>
+      `;
+      document.body.appendChild(wrapper);
+
+      const fab      = document.getElementById("nf-chat-fab");
+      const win      = document.getElementById("nf-chat-window");
+      const closeBtn = document.getElementById("nfChatClose");
+      const clearBtn = document.getElementById("nfChatClear");
+      const input    = document.getElementById("nfChatInput");
+      const sendBtn  = document.getElementById("nfChatSend");
+      const msgs     = document.getElementById("nfChatMessages");
+      const badge    = document.getElementById("nfChatBadge");
+      let open = false;
+
+      function showWelcome() {
+        appendMsg("bot", "👋 Hi! I'm your NutriFlow nutrition assistant. Ask me about meals for your condition, calorie info, budget picks, or any feature question!", false);
+      }
+
+      showWelcome();
+
+      function clearChat() {
+        msgs.innerHTML = "";
+        showWelcome();
+      }
+
+      function toggle() {
+        open = !open;
+        win.hidden = !open;
+        fab.classList.toggle("nf-chat-fab-open", open);
+        badge.style.display = "none";
+        if (open) { input.focus(); scrollBottom(); }
+      }
+
+      fab.addEventListener("click", toggle);
+      closeBtn.addEventListener("click", toggle);
+      clearBtn.addEventListener("click", clearChat);
+
+      sendBtn.addEventListener("click", send);
+      input.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
+
+      async function send() {
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        appendMsg("user", text);
+        const typing = appendMsg("bot", "…", false, true);
+
+        try {
+          const resp = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text })
+          });
+          const text2 = await resp.text();
+          let data;
+          try { data = JSON.parse(text2); } catch { data = { reply: "Server error: " + text2.slice(0, 120) }; }
+          typing.remove();
+          appendMsg("bot", data.reply || "I couldn't process that. Please try again.");
+          if (!open) { badge.style.display = "flex"; }
+        } catch (err) {
+          typing.remove();
+          appendMsg("bot", "Connection error: " + (err.message || "unknown"));
+        }
+      }
+
+      function appendMsg(role, text, _unused = true, isTyping = false) {
+        const el = document.createElement("div");
+        el.className = "nf-msg nf-msg-" + role + (isTyping ? " nf-msg-typing" : "");
+        const formatted = text
+          .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\n/g, "<br>");
+        el.innerHTML = `<div class="nf-bubble">${formatted}</div>`;
+        msgs.appendChild(el);
+        scrollBottom();
+        return el;
+      }
+
+      function scrollBottom() {
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", buildWidget);
+    } else {
+      buildWidget();
+    }
+  })();
+
+  // Toggle favorite without page reload
+  async function toggleFavorite(btn) {
+    const mealId = btn.dataset.mealId;
+    const isFavorited = btn.dataset.favorited === 'true';
+    const action = isFavorited ? 'unfavorite' : 'favorite';
+
+    btn.disabled = true;
+    try {
+      const res = await fetch(`/meals/${mealId}/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'redirectTo=__ajax__',
+        redirect: 'manual'
+      });
+
+      // Toggle state
+      const nowFavorited = !isFavorited;
+      btn.dataset.favorited = nowFavorited ? 'true' : 'false';
+      btn.classList.toggle('btn-fav-active', nowFavorited);
+
+      // Update label (longer text on detail page, heart-only on list)
+      const isDetailed = btn.textContent.includes('Save') || btn.textContent.includes('Saved');
+      if (isDetailed) {
+        btn.textContent = nowFavorited ? '♥ Saved' : '♡ Save';
+      } else {
+        btn.textContent = nowFavorited ? '♥' : '♡';
+      }
+    } catch (e) {
+      // silent fail — state unchanged
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

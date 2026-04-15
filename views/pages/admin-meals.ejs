@@ -1,0 +1,83 @@
+<%- include('../layouts/top') %>
+<%- include('../partials/nav') %>
+<%- include('../partials/alerts') %>
+
+<section id="admin-meal-filters" class="section-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Admin Only</p>
+      <h1>Manage Meals</h1>
+    </div>
+    <a href="/admin/meals/new" class="button">Add Meal</a>
+  </div>
+
+  <form method="GET" action="/admin/meals#admin-meal-results" class="filter-grid">
+    <label><span>Search</span><input type="text" name="q" value="<%= filters.q || '' %>"></label>
+    <label>
+      <span>Condition</span>
+      <select name="disease_type">
+        <option value="">All</option>
+        <% ['Diabetes', 'Hypertension', 'Heart Disease', 'None', 'Other'].forEach(option => { %>
+          <option value="<%= option %>" <%= isSelected(filters.disease_type, option) %>><%= option %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>
+      <span>Sort</span>
+      <select name="sort">
+        <% [['-createdAt', 'Newest'], ['meal_name', 'Name A-Z'], ['price', 'Lowest price'], ['-price', 'Highest price']].forEach(([value, label]) => { %>
+          <option value="<%= value %>" <%= isSelected(filters.sort || '-createdAt', value) %>><%= label %></option>
+        <% }) %>
+      </select>
+    </label>
+    <div class="button-row filter-actions">
+      <button type="submit" class="button">Filter</button>
+      <a href="/admin/meals#admin-meal-results" class="button button-ghost">Reset</a>
+    </div>
+  </form>
+</section>
+
+<section id="admin-meal-results" class="section-card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Condition</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% meals.forEach(meal => { %>
+          <tr>
+            <td><a href="/meals/<%= meal._id %>"><%= meal.meal_name %></a></td>
+            <td><%= meal.disease_type %></td>
+            <td><%= formatCurrency(meal.price) %></td>
+            <td>
+              <div class="button-row">
+                <a href="/admin/meals/<%= meal._id %>/edit" class="text-link">Edit</a>
+                <form method="POST" action="/admin/meals/<%= meal._id %>/delete" class="inline-form">
+                  <button type="submit" class="text-link danger-link">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <% if (pagination.page > 1) { %>
+      <a href="/admin/meals?<%= buildQueryString(query, { page: pagination.page - 1 }) %>#admin-meal-results">Previous</a>
+    <% } %>
+    <span>Page <%= pagination.page %> of <%= pagination.pages %></span>
+    <% if (pagination.page < pagination.pages) { %>
+      <a href="/admin/meals?<%= buildQueryString(query, { page: pagination.page + 1 }) %>#admin-meal-results">Next</a>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<%- include('../layouts/bottom') %>
